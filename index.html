@@ -1,0 +1,2040 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>GB1 · Knowledge System</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --red: #C8102E;
+  --red-dark: #8B0A1E;
+  --blue: #003DA5;
+  --blue-mid: #0050CC;
+  --blue-light: #4D8EFF;
+  --gold: #D4A843;
+  --gold-light: #F0C96A;
+  --green: #3DD6A0;
+  --bg: #09090C;
+  --bg2: #0F0F14;
+  --bg3: #16161E;
+  --surface: #1C1C26;
+  --surface2: #232330;
+  --surface3: #2A2A3A;
+  --border: #2C2C3E;
+  --border2: #3A3A52;
+  --text: #EAEAF2;
+  --text2: #B0B0CC;
+  --muted: #6868A0;
+  --mono: 'DM Mono', monospace;
+  --sans: 'DM Sans', sans-serif;
+  --display: 'Bebas Neue', sans-serif;
+  --radius: 10px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;overflow-x:hidden;}
+
+/* ─── HEADER ─── */
+header{
+  background:var(--bg2);border-bottom:2px solid var(--red);
+  padding:0 20px;display:flex;align-items:center;justify-content:space-between;
+  height:60px;position:sticky;top:0;z-index:90;
+}
+.logo{font-family:var(--display);font-size:26px;letter-spacing:3px;display:flex;align-items:center;gap:10px;}
+.logo .gb{color:var(--red);}
+.logo .div{color:var(--border2);font-size:18px;}
+.logo .sub{font-size:13px;font-family:var(--sans);font-weight:300;letter-spacing:1px;color:var(--muted);}
+.hstats{display:flex;gap:20px;}
+.hstat{display:flex;flex-direction:column;align-items:center;gap:1px;}
+.hstat .n{font-family:var(--display);font-size:19px;color:var(--gold);line-height:1;}
+.hstat .l{font-family:var(--mono);font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
+
+/* ─── NAV ─── */
+nav.tabs{background:var(--bg2);border-bottom:1px solid var(--border);display:flex;padding:0 20px;overflow-x:auto;gap:0;}
+nav.tabs::-webkit-scrollbar{display:none;}
+.tab{font-family:var(--display);font-size:14px;letter-spacing:2px;color:var(--muted);
+  padding:13px 18px;cursor:pointer;border:none;border-bottom:3px solid transparent;
+  background:none;white-space:nowrap;transition:all 0.2s;}
+.tab:hover{color:var(--text2);}
+.tab.active{color:var(--text);border-bottom-color:var(--red);}
+
+/* ─── CONTROLS ─── */
+.controls{background:var(--bg2);border-bottom:1px solid var(--border);padding:10px 20px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.search-wrap{flex:1;min-width:180px;position:relative;}
+.search-box{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:6px;
+  padding:8px 12px 8px 34px;color:var(--text);font-family:var(--mono);font-size:13px;outline:none;transition:border-color 0.2s;}
+.search-box:focus{border-color:var(--blue-mid);}
+.search-box::placeholder{color:var(--muted);}
+.search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:14px;pointer-events:none;}
+.fbtn{background:var(--surface);border:1px solid var(--border);border-radius:6px;
+  padding:7px 12px;color:var(--muted);font-family:var(--mono);font-size:11px;
+  cursor:pointer;transition:all 0.2s;white-space:nowrap;}
+.fbtn:hover{border-color:var(--blue-mid);color:var(--text);}
+.fbtn.active{background:var(--blue);border-color:var(--blue-mid);color:#fff;}
+
+/* ─── PROGRESS ─── */
+.progress-wrap{background:var(--bg2);border-bottom:1px solid var(--border);padding:8px 20px;display:flex;align-items:center;gap:14px;}
+.progress-label{font-family:var(--mono);font-size:10px;color:var(--muted);white-space:nowrap;text-transform:uppercase;letter-spacing:1px;}
+.progress-track{flex:1;height:5px;background:var(--surface);border-radius:3px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--red),var(--gold));border-radius:3px;transition:width 0.6s ease;}
+.progress-pct{font-family:var(--display);font-size:15px;color:var(--gold);min-width:38px;text-align:right;}
+
+/* ─── KPI BAR ─── */
+.kpi-bar{background:var(--bg3);border-bottom:1px solid var(--border);padding:10px 20px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.kpi-label{font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-right:4px;}
+.kpi-pill{display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:4px 10px;}
+.kpi-pill .kpi-cat{font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;}
+.kpi-pill .kpi-val{font-family:var(--display);font-size:14px;color:var(--gold);line-height:1;}
+.kpi-pill .kpi-tot{font-family:var(--mono);font-size:9px;color:var(--muted);}
+.kpi-pill.kpi-sd .kpi-val{color:var(--red);}
+.kpi-pill.kpi-gt .kpi-val{color:var(--blue-light);}
+.kpi-pill.kpi-gb .kpi-val{color:var(--green);}
+.kpi-pill.kpi-mk .kpi-val{color:var(--gold);}
+.kpi-pill.kpi-sub .kpi-val{color:#c084fc;}
+
+/* ─── EXPORT/IMPORT ─── */
+.data-bar{background:var(--bg2);border-bottom:1px solid var(--border);padding:7px 20px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.data-bar-label{font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-right:4px;}
+.data-btn{display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:6px;font-family:var(--mono);font-size:11px;cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--text2);transition:all 0.15s;}
+.data-btn:hover{border-color:var(--gold);color:var(--gold);}
+.data-btn.export{border-color:rgba(61,214,160,0.3);color:var(--green);}
+.data-btn.export:hover{background:rgba(61,214,160,0.08);border-color:var(--green);}
+.data-btn.import{border-color:rgba(77,142,255,0.3);color:var(--blue-light);}
+.data-btn.import:hover{background:rgba(77,142,255,0.08);border-color:var(--blue-light);}
+
+/* ─── YOUTUBE EMBED ─── */
+.yt-embed-wrap{margin-bottom:18px;}
+.yt-embed-label{font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;display:flex;align-items:center;gap:6px;}
+.yt-embed-label::before{content:'▶';color:var(--red);}
+.yt-frame-container{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;border:1px solid var(--border);background:var(--bg);}
+.yt-frame-container iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none;border-radius:8px;}
+.yt-search-fallback{display:flex;gap:8px;flex-wrap:wrap;}
+.yt-fallback-btn{display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:6px;font-family:var(--mono);font-size:11px;cursor:pointer;text-decoration:none;transition:all 0.15s;border:1px solid transparent;}
+.yt-fallback-btn.google{background:rgba(200,16,46,0.12);border-color:rgba(200,16,46,0.3);color:var(--red);}
+.yt-fallback-btn.google:hover{background:rgba(200,16,46,0.22);}
+.yt-fallback-btn.yt{background:rgba(0,80,204,0.12);border-color:rgba(0,80,204,0.3);color:var(--blue-light);}
+.yt-fallback-btn.yt:hover{background:rgba(0,80,204,0.22);}
+
+/* ─── SUBMISSION TAG ─── */
+.ct-sub{background:rgba(192,132,252,0.15);color:#c084fc;border:1px solid rgba(192,132,252,0.3);}
+
+/* ─── MAIN ─── */
+.main{padding:20px;max-width:1400px;margin:0 auto;}
+
+/* ─── WEEK GROUP ─── */
+.week-group{margin-bottom:28px;}
+.week-hdr{display:flex;align-items:center;gap:12px;margin-bottom:12px;padding-bottom:7px;border-bottom:1px solid var(--border);}
+.week-title{font-family:var(--display);font-size:20px;letter-spacing:3px;}
+.week-badge{font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:1px;
+  color:var(--muted);background:var(--surface);padding:3px 7px;border-radius:4px;border:1px solid var(--border);}
+.week-comp{margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--muted);}
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px;}
+
+/* ─── CARD ─── */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  overflow:hidden;transition:border-color 0.2s,transform 0.15s,box-shadow 0.2s;cursor:pointer;}
+.card:hover{border-color:var(--blue-mid);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,80,204,0.12);}
+.card.mastered{border-color:var(--gold);}
+.card.trained{border-color:var(--blue-mid);}
+
+.card-hdr{display:flex;align-items:center;gap:8px;padding:10px 12px;background:var(--bg3);border-bottom:1px solid var(--border);}
+.tech-num{font-family:var(--display);font-size:20px;color:var(--red);line-height:1;min-width:32px;}
+.cat-tag{font-family:var(--mono);font-size:8px;text-transform:uppercase;letter-spacing:1px;padding:2px 6px;border-radius:3px;white-space:nowrap;}
+.ct-sd{background:rgba(200,16,46,0.15);color:var(--red);border:1px solid rgba(200,16,46,0.3);}
+.ct-gt{background:rgba(0,61,165,0.2);color:var(--blue-light);border:1px solid rgba(0,61,165,0.4);}
+.ct-gb{background:rgba(0,180,120,0.15);color:var(--green);border:1px solid rgba(0,180,120,0.3);}
+.ct-mk{background:rgba(180,100,0,0.15);color:var(--gold);border:1px solid rgba(180,100,0,0.3);}
+.card-cls{margin-left:auto;font-family:var(--mono);font-size:9px;color:var(--muted);}
+
+/* search btn on card */
+.card-search-btn{
+  background:none;border:1px solid var(--border);border-radius:4px;
+  padding:3px 7px;font-family:var(--mono);font-size:9px;color:var(--muted);
+  cursor:pointer;transition:all 0.15s;white-space:nowrap;
+}
+.card-search-btn:hover{background:rgba(200,16,46,0.15);border-color:var(--red);color:var(--red);}
+
+.card-body{padding:10px 12px;}
+.tech-name{font-size:12px;font-weight:600;color:var(--text);line-height:1.4;margin-bottom:6px;}
+.highlights{display:flex;flex-direction:column;gap:3px;margin-bottom:0;}
+.hl{display:flex;align-items:center;gap:6px;cursor:pointer;}
+.hl input{display:none;}
+.hbox{width:13px;height:13px;border:1px solid var(--border);border-radius:3px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.15s;background:var(--bg);}
+.hl input:checked+.hbox{background:var(--blue);border-color:var(--blue-mid);}
+.hl input:checked+.hbox::after{content:'✓';color:#fff;font-size:8px;font-weight:bold;}
+.hl-txt{font-family:var(--mono);font-size:10px;color:var(--muted);transition:color 0.15s;}
+.hl input:checked~.hl-txt{color:var(--text2);}
+
+.card-foot{padding:8px 12px;background:var(--bg3);border-top:1px solid var(--border);display:flex;align-items:center;gap:8px;}
+.stars{display:flex;gap:2px;}
+.star{font-size:13px;cursor:pointer;user-select:none;color:var(--border2);transition:transform 0.1s,color 0.1s;}
+.star.lit{color:var(--gold);}
+.star:hover{transform:scale(1.25);}
+.date-inp{flex:1;background:transparent;border:none;border-bottom:1px solid var(--border);
+  color:var(--muted);font-family:var(--mono);font-size:10px;outline:none;padding:1px 3px;
+  text-align:right;transition:border-color 0.2s;min-width:0;}
+.date-inp:focus{border-color:var(--blue-mid);color:var(--text);}
+.expand-btn{background:none;border:none;color:var(--muted);font-size:11px;cursor:pointer;padding:0 4px;transition:color 0.15s;white-space:nowrap;font-family:var(--mono);}
+.expand-btn:hover{color:var(--blue-light);}
+
+/* ─── DETAIL MODAL ─── */
+.modal-overlay{
+  display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);
+  z-index:200;align-items:flex-end;justify-content:center;
+  backdrop-filter:blur(6px);
+}
+.modal-overlay.open{display:flex;}
+@media(min-width:640px){.modal-overlay.open{align-items:center;}}
+
+.modal{
+  background:var(--bg2);border:1px solid var(--border2);
+  border-radius:16px 16px 0 0;width:100%;max-width:680px;
+  max-height:92vh;overflow-y:auto;position:relative;
+  animation:slideUp 0.3s cubic-bezier(0.34,1.56,0.64,1);
+}
+@media(min-width:640px){.modal{border-radius:16px;max-height:88vh;}}
+@keyframes slideUp{from{transform:translateY(60px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+
+.modal::-webkit-scrollbar{width:4px;}
+.modal::-webkit-scrollbar-track{background:transparent;}
+.modal::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+
+/* drag handle */
+.modal-handle{width:40px;height:4px;background:var(--border2);border-radius:2px;margin:10px auto 0;}
+
+.modal-top{
+  position:sticky;top:0;background:var(--bg2);border-bottom:1px solid var(--border);
+  padding:14px 18px;display:flex;align-items:flex-start;gap:12px;z-index:1;
+}
+.modal-num{font-family:var(--display);font-size:42px;color:var(--red);line-height:1;flex-shrink:0;}
+.modal-top-info{flex:1;min-width:0;}
+.modal-cat{font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin-bottom:3px;}
+.modal-title{font-size:15px;font-weight:600;line-height:1.4;color:var(--text);}
+.modal-week{font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:3px;}
+.modal-close{background:var(--surface);border:1px solid var(--border);border-radius:6px;
+  color:var(--muted);font-size:18px;cursor:pointer;padding:4px 10px;line-height:1;
+  flex-shrink:0;transition:all 0.15s;}
+.modal-close:hover{color:var(--text);border-color:var(--border2);}
+
+/* modal action bar */
+.modal-actions{display:flex;gap:8px;padding:12px 18px;border-bottom:1px solid var(--border);flex-wrap:wrap;}
+.action-btn{
+  display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:6px;
+  font-family:var(--mono);font-size:11px;cursor:pointer;text-decoration:none;
+  transition:all 0.15s;border:1px solid transparent;
+}
+.action-btn.google{background:rgba(200,16,46,0.12);border-color:rgba(200,16,46,0.3);color:var(--red);}
+.action-btn.google:hover{background:rgba(200,16,46,0.22);border-color:var(--red);}
+.action-btn.yt{background:rgba(0,80,204,0.12);border-color:rgba(0,80,204,0.3);color:var(--blue-light);}
+.action-btn.yt:hover{background:rgba(0,80,204,0.22);border-color:var(--blue-mid);}
+.action-btn.gb-site{background:rgba(212,168,67,0.1);border-color:rgba(212,168,67,0.3);color:var(--gold);}
+.action-btn.gb-site:hover{background:rgba(212,168,67,0.2);border-color:var(--gold);}
+
+/* modal body */
+.modal-body{padding:18px;}
+.modal-section{margin-bottom:22px;}
+.modal-section-title{
+  font-family:var(--display);font-size:15px;letter-spacing:2px;
+  color:var(--text);margin-bottom:10px;display:flex;align-items:center;gap:8px;
+}
+.modal-section-title .accent{color:var(--red);}
+
+/* competency in modal */
+.modal-comp{display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;}
+.modal-stars{display:flex;gap:5px;}
+.modal-star{font-size:22px;cursor:pointer;user-select:none;color:var(--border2);transition:transform 0.1s,color 0.1s;}
+.modal-star.lit{color:var(--gold);}
+.modal-star:hover{transform:scale(1.2);}
+.comp-label{font-family:var(--mono);font-size:11px;color:var(--muted);}
+.date-row{display:flex;align-items:center;gap:8px;}
+.date-label{font-family:var(--mono);font-size:10px;color:var(--muted);}
+.modal-date{background:var(--surface);border:1px solid var(--border);border-radius:5px;
+  color:var(--text);font-family:var(--mono);font-size:11px;padding:5px 9px;outline:none;
+  transition:border-color 0.2s;}
+.modal-date:focus{border-color:var(--blue-mid);}
+
+/* step-by-step */
+.steps{display:flex;flex-direction:column;gap:8px;}
+.step{display:flex;gap:12px;align-items:flex-start;}
+.step-num{
+  font-family:var(--display);font-size:16px;color:var(--red);
+  width:26px;height:26px;border-radius:50%;border:1px solid rgba(200,16,46,0.4);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;
+}
+.step-content{flex:1;}
+.step-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px;}
+.step-desc{font-size:12px;color:var(--text2);line-height:1.6;}
+
+/* highlights checklist in modal */
+.modal-highlights{display:flex;flex-direction:column;gap:7px;}
+.modal-hl{display:flex;align-items:center;gap:10px;cursor:pointer;padding:8px 10px;background:var(--surface);border-radius:6px;border:1px solid var(--border);transition:border-color 0.15s;}
+.modal-hl:hover{border-color:var(--border2);}
+.modal-hl input{display:none;}
+.modal-hbox{width:18px;height:18px;border:1px solid var(--border);border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.15s;background:var(--bg);}
+.modal-hl input:checked+.modal-hbox{background:var(--blue);border-color:var(--blue-mid);}
+.modal-hl input:checked+.modal-hbox::after{content:'✓';color:#fff;font-size:11px;font-weight:bold;}
+.modal-hl-txt{font-family:var(--mono);font-size:12px;color:var(--muted);transition:color 0.15s;}
+.modal-hl input:checked~.modal-hl-txt{color:var(--text);}
+
+/* mistakes */
+.mistakes-list{display:flex;flex-direction:column;gap:7px;}
+.mistake{display:flex;gap:10px;padding:10px 12px;background:rgba(200,16,46,0.06);border-radius:6px;border:1px solid rgba(200,16,46,0.2);}
+.mistake-icon{color:var(--red);font-size:14px;flex-shrink:0;margin-top:1px;}
+.mistake-text{font-size:12px;color:var(--text2);line-height:1.6;}
+
+/* tips */
+.tips-list{display:flex;flex-direction:column;gap:7px;}
+.tip{display:flex;gap:10px;padding:10px 12px;background:rgba(61,214,160,0.06);border-radius:6px;border:1px solid rgba(61,214,160,0.2);}
+.tip-icon{color:var(--green);font-size:14px;flex-shrink:0;margin-top:1px;}
+.tip-text{font-size:12px;color:var(--text2);line-height:1.6;}
+
+/* related & advanced */
+.related-grid{display:flex;flex-wrap:wrap;gap:8px;}
+.related-btn{
+  background:var(--surface);border:1px solid var(--border);border-radius:6px;
+  padding:7px 12px;font-family:var(--mono);font-size:11px;color:var(--text2);
+  cursor:pointer;transition:all 0.15s;display:flex;align-items:center;gap:5px;
+}
+.related-btn:hover{border-color:var(--blue-mid);color:var(--blue-light);}
+.related-btn .rnum{color:var(--red);font-size:10px;}
+
+/* advanced variations */
+.adv-list{display:flex;flex-direction:column;gap:8px;}
+.adv-item{padding:10px 12px;background:var(--surface);border-radius:6px;border:1px solid var(--border);}
+.adv-title{font-family:var(--display);font-size:13px;letter-spacing:1px;color:var(--gold);margin-bottom:3px;}
+.adv-desc{font-size:12px;color:var(--text2);line-height:1.6;}
+
+/* notes in modal */
+.modal-notes{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:6px;
+  color:var(--text);font-family:var(--mono);font-size:12px;padding:10px 12px;
+  min-height:90px;resize:vertical;outline:none;transition:border-color 0.2s;line-height:1.7;}
+.modal-notes:focus{border-color:var(--blue-mid);}
+.modal-notes::placeholder{color:var(--muted);}
+
+/* ─── PRINCIPLES PAGE ─── */
+.page-body{padding:20px;max-width:1100px;margin:0 auto;}
+.page-intro{
+  background:linear-gradient(135deg,rgba(200,16,46,0.07),rgba(0,61,165,0.07));
+  border:1px solid var(--border);border-radius:12px;padding:24px 28px;margin-bottom:28px;position:relative;overflow:hidden;
+}
+.page-intro::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--red),var(--blue-mid),var(--gold));}
+.page-intro h2{font-family:var(--display);font-size:30px;letter-spacing:3px;margin-bottom:7px;}
+.page-intro p{font-size:13px;color:var(--text2);line-height:1.8;max-width:680px;}
+.page-intro .motto{font-family:var(--display);font-size:17px;letter-spacing:2px;color:var(--gold);margin-top:14px;}
+.section-hdr{font-family:var(--display);font-size:18px;letter-spacing:3px;color:var(--text);margin-bottom:14px;padding-bottom:7px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+.section-hdr .acc{color:var(--red);}
+.principles-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-bottom:36px;}
+.pc{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;position:relative;overflow:hidden;transition:border-color 0.2s;}
+.pc:hover{border-color:var(--blue-mid);}
+.pc::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;background:var(--red);}
+.pc-num{font-family:var(--display);font-size:34px;color:rgba(200,16,46,0.12);line-height:1;margin-bottom:3px;}
+.pc-title{font-family:var(--display);font-size:16px;letter-spacing:1px;color:var(--text);margin-bottom:7px;}
+.pc-desc{font-size:12px;color:var(--text2);line-height:1.7;}
+.pc-quote{font-family:var(--mono);font-size:10px;color:var(--gold);margin-top:9px;font-style:italic;}
+.values-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-bottom:36px;}
+.vc{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px 12px;text-align:center;transition:all 0.2s;}
+.vc:hover{border-color:var(--gold);transform:translateY(-2px);}
+.vc-icon{font-size:26px;margin-bottom:6px;}
+.vc-name{font-family:var(--display);font-size:14px;letter-spacing:1px;color:var(--gold);margin-bottom:5px;}
+.vc-desc{font-size:11px;color:var(--muted);line-height:1.6;}
+
+/* ─── GLOSSARY ─── */
+.glossary-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;margin-bottom:36px;}
+.gc{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 14px;}
+.g-term{font-family:var(--display);font-size:15px;letter-spacing:1px;color:var(--gold);margin-bottom:1px;}
+.g-port{font-family:var(--mono);font-size:9px;color:var(--muted);margin-bottom:5px;font-style:italic;}
+.g-def{font-size:11px;color:var(--text2);line-height:1.6;}
+
+/* ─── POSITIONS ─── */
+.positions-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-bottom:36px;}
+.posc{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+.pos-hdr{padding:10px 14px;background:var(--bg3);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;}
+.pos-icon{font-size:18px;}
+.pos-name{font-family:var(--display);font-size:16px;letter-spacing:1px;}
+.pos-tag{margin-left:auto;font-family:var(--mono);font-size:8px;text-transform:uppercase;letter-spacing:1px;padding:2px 6px;border-radius:3px;}
+.pt-top{background:rgba(0,61,165,0.2);color:var(--blue-light);border:1px solid rgba(0,61,165,0.4);}
+.pt-bot{background:rgba(0,180,120,0.15);color:var(--green);border:1px solid rgba(0,180,120,0.3);}
+.pt-dom{background:rgba(200,16,46,0.15);color:var(--red);border:1px solid rgba(200,16,46,0.3);}
+.pos-body-inner{padding:12px 14px;}
+.pos-desc{font-size:12px;color:var(--text2);line-height:1.7;margin-bottom:9px;}
+.pos-attr{display:flex;gap:7px;margin-bottom:4px;}
+.pos-al{font-family:var(--mono);font-size:9px;color:var(--red);min-width:72px;text-transform:uppercase;}
+.pos-av{font-family:var(--mono);font-size:9px;color:var(--text2);}
+
+/* ─── TOAST ─── */
+.toast{position:fixed;bottom:24px;right:20px;background:var(--surface2);border:1px solid var(--border);
+  border-radius:8px;padding:9px 14px;font-family:var(--mono);font-size:11px;color:var(--text);
+  opacity:0;transform:translateY(8px);transition:all 0.25s;z-index:400;pointer-events:none;}
+.toast.show{opacity:1;transform:translateY(0);}
+
+/* ─── EMPTY ─── */
+.empty{text-align:center;padding:50px 20px;color:var(--muted);font-family:var(--mono);font-size:13px;}
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-track{background:var(--bg2);}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:580px){
+  .cards-grid{grid-template-columns:1fr;}
+  .principles-grid,.glossary-grid,.positions-grid,.values-grid{grid-template-columns:1fr;}
+  header{padding:0 12px;}
+  .controls{padding:8px 12px;}
+  .main,.page-body{padding:12px;}
+  .tab{padding:11px 12px;font-size:12px;}
+  .modal-body{padding:14px;}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">
+    <span class="gb">GB</span><span>¹</span>
+    <span class="div">|</span>
+    <span class="sub">KNOWLEDGE SYSTEM</span>
+  </div>
+  <div class="hstats">
+    <div class="hstat"><span class="n" id="s-trained">0</span><span class="l">Trained</span></div>
+    <div class="hstat"><span class="n" id="s-mastered">0</span><span class="l">Mastered</span></div>
+    <div class="hstat"><span class="n" id="s-total">96</span><span class="l">Total</span></div>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav class="tabs">
+  <button class="tab active" onclick="showPage('tracker')">⬡ Techniques</button>
+  <button class="tab" onclick="showPage('principles')">◈ Principles</button>
+  <button class="tab" onclick="showPage('glossary')">◎ Glossary</button>
+  <button class="tab" onclick="showPage('positions')">⊕ Positions</button>
+</nav>
+
+<!-- TRACKER PAGE -->
+<div id="page-tracker">
+  <div class="controls">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input class="search-box" type="text" id="searchBox" placeholder="Search techniques, categories...">
+    </div>
+    <button class="fbtn active" data-filter="all">All</button>
+    <button class="fbtn" data-filter="Self-Defense">Self-Defense</button>
+    <button class="fbtn" data-filter="Guard Top">Guard Top</button>
+    <button class="fbtn" data-filter="Guard Bottom">Guard Bottom</button>
+    <button class="fbtn" data-filter="Mount/KOB">Mount/KOB</button>
+    <button class="fbtn" data-filter="Submission">Submissions</button>
+    <button class="fbtn" data-filter="untrained">Not Trained</button>
+  </div>
+  <div class="progress-wrap">
+    <span class="progress-label">Progress</span>
+    <div class="progress-track"><div class="progress-fill" id="progFill" style="width:0%"></div></div>
+    <span class="progress-pct" id="progPct">0%</span>
+  </div>
+  <!-- KPI BAR -->
+  <div class="kpi-bar" id="kpiBar">
+    <span class="kpi-label">Trained by category:</span>
+    <div class="kpi-pill kpi-sd"><span class="kpi-cat">Self-Defense</span><span class="kpi-val" id="kpi-sd">0</span><span class="kpi-tot" id="kpi-sd-tot">/24</span></div>
+    <div class="kpi-pill kpi-gt"><span class="kpi-cat">Guard Top</span><span class="kpi-val" id="kpi-gt">0</span><span class="kpi-tot" id="kpi-gt-tot">/24</span></div>
+    <div class="kpi-pill kpi-gb"><span class="kpi-cat">Guard Bottom</span><span class="kpi-val" id="kpi-gb">0</span><span class="kpi-tot" id="kpi-gb-tot">/24</span></div>
+    <div class="kpi-pill kpi-mk"><span class="kpi-cat">Mount/KOB</span><span class="kpi-val" id="kpi-mk">0</span><span class="kpi-tot" id="kpi-mk-tot">/24</span></div>
+    <div class="kpi-pill kpi-sub"><span class="kpi-cat">Submissions</span><span class="kpi-val" id="kpi-sub">0</span><span class="kpi-tot" id="kpi-sub-tot"></span></div>
+  </div>
+  <!-- DATA BAR -->
+  <div class="data-bar">
+    <span class="data-bar-label">Your Data:</span>
+    <button class="data-btn export" onclick="exportData()">⬇ Export Progress</button>
+    <button class="data-btn import" onclick="document.getElementById('importFile').click()">⬆ Import Progress</button>
+    <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(this)">
+  </div>
+  <div class="main" id="mainContent"></div>
+</div>
+
+<!-- PRINCIPLES PAGE -->
+<div id="page-principles" style="display:none">
+  <div class="page-body">
+    <div class="page-intro">
+      <h2>GRACIE BARRA PRINCIPLES</h2>
+      <p>Founded by Master Carlos Gracie Jr., Gracie Barra is built on the belief that Jiu-Jitsu is more than a martial art — it is a way of life. These principles form the philosophical foundation of every GB school worldwide.</p>
+      <div class="motto">🔴 "JIU-JITSU FOR EVERYONE"</div>
+    </div>
+    <div class="section-hdr"><span class="acc">◈</span> CORE PRINCIPLES</div>
+    <div class="principles-grid">
+      <div class="pc"><div class="pc-num">01</div><div class="pc-title">JIU-JITSU FOR EVERYONE</div><div class="pc-desc">Gracie Barra's founding mission: Jiu-Jitsu is accessible to all, regardless of age, gender, or athletic background. GB schools worldwide are welcoming environments where anyone can begin their journey.</div><div class="pc-quote">"The mat does not care who you were before you stepped on it."</div></div>
+      <div class="pc"><div class="pc-num">02</div><div class="pc-title">RESPECT</div><div class="pc-desc">Respect for your instructor, your training partners, the academy, and yourself. On the mat, ego is left at the door. The bow before and after each roll is a commitment to mutual safety and dignity.</div><div class="pc-quote">"Respect your partner. They are your greatest teacher."</div></div>
+      <div class="pc"><div class="pc-num">03</div><div class="pc-title">DISCIPLINE</div><div class="pc-desc">Consistent training over time is the only path to growth. Discipline means showing up when motivation is low, drilling a technique for the hundredth time, and trusting the process.</div><div class="pc-quote">"Discipline is doing what needs to be done even when you don't want to."</div></div>
+      <div class="pc"><div class="pc-num">04</div><div class="pc-title">TEAMWORK</div><div class="pc-desc">You cannot reach your potential alone. GB trains as a team. Your training partners' growth is your growth. Helping a teammate improve makes the entire academy stronger.</div><div class="pc-quote">"Iron sharpens iron. We grow together."</div></div>
+      <div class="pc"><div class="pc-num">05</div><div class="pc-title">CHARACTER DEVELOPMENT</div><div class="pc-desc">Jiu-Jitsu cultivates humility, patience, perseverance, and resilience. A belt promotion at GB reflects not just technical skill but the growth of character.</div><div class="pc-quote">"A black belt is a white belt who never quit."</div></div>
+      <div class="pc"><div class="pc-num">06</div><div class="pc-title">POSITIVITY</div><div class="pc-desc">The GB environment is one of encouragement, not intimidation. Senior students lead by example. GB rejects the "shark tank" mentality and builds a community where everyone thrives.</div><div class="pc-quote">"Create the environment you wish you had when you started."</div></div>
+      <div class="pc"><div class="pc-num">07</div><div class="pc-title">BALANCE</div><div class="pc-desc">Jiu-Jitsu should enhance your life, not consume it. GB promotes balance between training, family, work, and health. A balanced practitioner is a sustainable practitioner.</div><div class="pc-quote">"The goal is lifelong Jiu-Jitsu."</div></div>
+      <div class="pc"><div class="pc-num">08</div><div class="pc-title">SELF-DEFENSE AS FOUNDATION</div><div class="pc-desc">Every GB program begins with self-defense. Practical self-defense capability is the original purpose of Jiu-Jitsu and remains the bedrock of the GB curriculum.</div><div class="pc-quote">"Know how to defend yourself first. Everything else follows."</div></div>
+    </div>
+    <div class="section-hdr"><span class="acc">◈</span> GB CORE VALUES</div>
+    <div class="values-grid">
+      <div class="vc"><div class="vc-icon">🥋</div><div class="vc-name">HUMILITY</div><div class="vc-desc">Always be a student. The moment you think you know everything is the moment you stop growing.</div></div>
+      <div class="vc"><div class="vc-icon">🔥</div><div class="vc-name">PERSEVERANCE</div><div class="vc-desc">Push through adversity on and off the mat. Tapping in training makes you stronger.</div></div>
+      <div class="vc"><div class="vc-icon">🤝</div><div class="vc-name">LOYALTY</div><div class="vc-desc">To your team, your instructor, and the art. GB is a family — act accordingly.</div></div>
+      <div class="vc"><div class="vc-icon">⚖️</div><div class="vc-name">INTEGRITY</div><div class="vc-desc">Be honest about your level, your progress, and your effort.</div></div>
+      <div class="vc"><div class="vc-icon">💡</div><div class="vc-name">CURIOSITY</div><div class="vc-desc">Ask questions. Explore positions. Never stop wondering "why does this work?"</div></div>
+      <div class="vc"><div class="vc-icon">🌍</div><div class="vc-name">COMMUNITY</div><div class="vc-desc">Walk into any GB academy in the world and you are home.</div></div>
+    </div>
+    <div class="section-hdr"><span class="acc">◈</span> THE BELT SYSTEM</div>
+    <div class="principles-grid">
+      <div class="pc"><div class="pc-title">⬜ WHITE BELT</div><div class="pc-desc">Focus on survival, basic positions, and building the habit of training. The goal is staying calm under pressure and absorbing fundamentals.</div></div>
+      <div class="pc"><div class="pc-title">🔵 BLUE BELT</div><div class="pc-desc">Technical competency with foundational techniques. Can defend, escape, and attack with basic proficiency. Personal game begins to emerge.</div></div>
+      <div class="pc"><div class="pc-title">🟣 PURPLE BELT</div><div class="pc-desc">Beginning of mastery. Developed personal game, can teach fundamentals, understands deeper connections between techniques.</div></div>
+      <div class="pc"><div class="pc-title">🟤 BROWN BELT</div><div class="pc-desc">Refinement. Fine-tune the game, develop teaching ability. Efficiency replaces athleticism.</div></div>
+      <div class="pc"><div class="pc-title">⬛ BLACK BELT</div><div class="pc-desc">A commitment, not a destination. Represents a lifetime of practice, teaching, and contribution to the art.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- GLOSSARY PAGE -->
+<div id="page-glossary" style="display:none">
+  <div class="page-body">
+    <div class="page-intro"><h2>BJJ GLOSSARY</h2><p>Key terms, Portuguese vocabulary, and BJJ concepts used throughout the GB1 curriculum.</p></div>
+    <div class="section-hdr"><span class="acc">◎</span> PORTUGUESE TERMS</div>
+    <div class="glossary-grid">
+      <div class="gc"><div class="g-term">OSS</div><div class="g-port">Acknowledgement / Respect</div><div class="g-def">Universal BJJ expression of acknowledgement and respect. Used to greet, confirm instructions, and show appreciation.</div></div>
+      <div class="gc"><div class="g-term">TATAME</div><div class="g-port">Mat</div><div class="g-def">The training mat. Respect for the tatame is a core GB value.</div></div>
+      <div class="gc"><div class="g-term">PROFESSOR</div><div class="g-port">Instructor</div><div class="g-def">Title for black belt instructors at GB. Always addressed as "Professor" as a sign of respect.</div></div>
+      <div class="gc"><div class="g-term">MESTRE</div><div class="g-port">Master</div><div class="g-def">Title reserved for the most senior practitioners. Master Carlos Gracie Jr. founded Gracie Barra.</div></div>
+      <div class="gc"><div class="g-term">FAIXA</div><div class="g-port">Belt</div><div class="g-def">The colored belt indicating rank. Earned through time, technical skill, attendance, and character.</div></div>
+      <div class="gc"><div class="g-term">KIMONO / GI</div><div class="g-port">Training Uniform</div><div class="g-def">BJJ uniform consisting of a jacket, pants, and belt.</div></div>
+      <div class="gc"><div class="g-term">GUARDA</div><div class="g-port">Guard</div><div class="g-def">The fundamental bottom position family where the practitioner uses legs to control and attack.</div></div>
+      <div class="gc"><div class="g-term">MONTADA</div><div class="g-port">Mount</div><div class="g-def">Dominant top position — sitting on the opponent's torso, controlling their body.</div></div>
+      <div class="gc"><div class="g-term">RASPAGEM</div><div class="g-port">Sweep</div><div class="g-def">Technique from the bottom to reverse position and come on top.</div></div>
+      <div class="gc"><div class="g-term">PASSAGEM</div><div class="g-port">Guard Pass</div><div class="g-def">Technique to get past the opponent's guard and achieve a dominant top position.</div></div>
+      <div class="gc"><div class="g-term">FINALIZAÇÃO</div><div class="g-port">Submission</div><div class="g-def">A technique that forces the opponent to tap — chokes, armbars, and joint locks.</div></div>
+      <div class="gc"><div class="g-term">QUEDA</div><div class="g-port">Takedown</div><div class="g-def">Bringing the fight from standing to the ground.</div></div>
+      <div class="gc"><div class="g-term">TREINO</div><div class="g-port">Training</div><div class="g-def">Your training session.</div></div>
+      <div class="gc"><div class="g-term">JOGO</div><div class="g-port">The Game</div><div class="g-def">Refers to live sparring or rolling.</div></div>
+    </div>
+    <div class="section-hdr"><span class="acc">◎</span> TECHNICAL CONCEPTS</div>
+    <div class="glossary-grid">
+      <div class="gc"><div class="g-term">POSTURE</div><div class="g-def">Alignment of spine and hips. Good posture in guard (top) means straight back, head up, hips forward — resisting being broken down.</div></div>
+      <div class="gc"><div class="g-term">BASE</div><div class="g-def">Your stability and balance. A wide, low base resists sweeps and takedowns.</div></div>
+      <div class="gc"><div class="g-term">PRESSURE</div><div class="g-def">Using body weight intentionally to control and exhaust the opponent. Good pressure feels heavy and suffocating.</div></div>
+      <div class="gc"><div class="g-term">HIP ESCAPE (SHRIMPING)</div><div class="g-def">The most fundamental BJJ movement. Lateral hip motion to create space, recover guard, and escape bad positions.</div></div>
+      <div class="gc"><div class="g-term">BRIDGE (UPA)</div><div class="g-def">Explosive hip elevation to escape mount. Combined with trapping an arm and leg, it rolls the opponent.</div></div>
+      <div class="gc"><div class="g-term">TECHNICAL LIFT</div><div class="g-def">Safe method of standing from the ground using a posted hand and knee to protect against leg attacks.</div></div>
+      <div class="gc"><div class="g-term">FRAMES</div><div class="g-def">Using forearms and hands as structural barriers against opponent's weight. Essential for creating space.</div></div>
+      <div class="gc"><div class="g-term">GRIPS</div><div class="g-def">How and where you hold the opponent's gi. Grip control is fundamental — controlling grips controls the entire game.</div></div>
+      <div class="gc"><div class="g-term">UNDERHOOK</div><div class="g-def">Inserting your arm underneath the opponent's arm. One of the most powerful control tools in BJJ.</div></div>
+      <div class="gc"><div class="g-term">GUARD RETENTION</div><div class="g-def">Preventing the opponent from passing your guard. Requires hip movement, framing, and regripping.</div></div>
+      <div class="gc"><div class="g-term">DISTANCE MANAGEMENT</div><div class="g-def">Controlling the space between you and opponent. In self-defense, prevents strikes. In sport, determines available attacks.</div></div>
+      <div class="gc"><div class="g-term">TAPPING</div><div class="g-def">Three taps to signal submission and end the roll. Tapping is not failure — it is learning.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- POSITIONS PAGE -->
+<div id="page-positions" style="display:none">
+  <div class="page-body">
+    <div class="page-intro"><h2>POSITIONS & HIERARCHY</h2><p>BJJ has a positional hierarchy. Understanding where you are on it, and how to improve your position, is the strategic foundation of GB1.</p><div class="motto">Control → Improve → Submit</div></div>
+    <div class="section-hdr"><span class="acc">⊕</span> POSITIONAL HIERARCHY</div>
+    <div class="positions-grid">
+      <div class="posc"><div class="pos-hdr"><span class="pos-icon">👑</span><span class="pos-name">REAR MOUNT</span><span class="pos-tag pt-dom">Dominant</span></div><div class="pos-body-inner"><div class="pos-desc">Most dominant position. Behind opponent with hooks in — they cannot see your attacks and have limited defense.</div><div class="pos-attr"><span class="pos-al">Attacks</span><span class="pos-av">RNC, Bow & Arrow, Arm Lock</span></div><div class="pos-attr"><span class="pos-al">Control</span><span class="pos-av">Seatbelt, hooks, body triangle</span></div><div class="pos-attr"><span class="pos-al">GB1 Weeks</span><span class="pos-av">9–14</span></div></div></div>
+      <div class="posc"><div class="pos-hdr"><span class="pos-icon">⬛</span><span class="pos-name">MOUNT</span><span class="pos-tag pt-top">Top</span></div><div class="pos-body-inner"><div class="pos-desc">Sitting on opponent's torso. Full control of upper body. Opponent bears your full weight.</div><div class="pos-attr"><span class="pos-al">Attacks</span><span class="pos-av">Armbar, Triangle, Key Lock, Ezequiel</span></div><div class="pos-attr"><span class="pos-al">Control</span><span class="pos-av">Low/high/s-mount</span></div><div class="pos-attr"><span class="pos-al">GB1 Weeks</span><span class="pos-av">4, 9, 10, 14</span></div></div></div>
+      <div class="posc"><div class="pos-hdr"><span class="pos-icon">🔲</span><span class="pos-name">KNEE ON BELLY</span><span class="pos-tag pt-top">Top</span></div><div class="pos-body-inner"><div class="pos-desc">Knee on opponent's belly creates intense pressure. High mobility for transitions.</div><div class="pos-attr"><span class="pos-al">Attacks</span><span class="pos-av">Armbar, transition to mount/back</span></div><div class="pos-attr"><span class="pos-al">Control</span><span class="pos-av">Collar grip, knee pressure</span></div><div class="pos-attr"><span class="pos-al">GB1 Weeks</span><span class="pos-av">4, 9, 11, 14</span></div></div></div>
+      <div class="posc"><div class="pos-hdr"><span class="pos-icon">🔷</span><span class="pos-name">SIDE CONTROL</span><span class="pos-tag pt-top">Top</span></div><div class="pos-body-inner"><div class="pos-desc">Perpendicular control of upper body. Heavy chest pressure with hip blocking prevents escape.</div><div class="pos-attr"><span class="pos-al">Attacks</span><span class="pos-av">Americana, Kimura, transitions</span></div><div class="pos-attr"><span class="pos-al">Control</span><span class="pos-av">Near arm under, far arm over</span></div><div class="pos-attr"><span class="pos-al">GB1 Weeks</span><span class="pos-av">3, 6, 7, 11</span></div></div></div>
+      <div class="posc"><div class="pos-hdr"><span class="pos-icon">🔵</span><span class="pos-name">CLOSED GUARD BOTTOM</span><span class="pos-tag pt-bot">Bottom</span></div><div class="pos-body-inner"><div class="pos-desc">Legs locked around opponent. Fundamental attacking position — sweep, choke, or attack arms.</div><div class="pos-attr"><span class="pos-al">Attacks</span><span class="pos-av">Triangle, Armbar, Omoplata, Sweeps</span></div><div class="pos-attr"><span class="pos-al">Principle</span><span class="pos-av">Break posture first, then attack</span></div><div class="pos-attr"><span class="pos-al">GB1 Weeks</span><span class="pos-av">1–5, 8, 13, 16</span></div></div></div>
+      <div class="posc"><div class="pos-hdr"><span class="pos-icon">🕸️</span><span class="pos-name">OPEN GUARD FAMILY</span><span class="pos-tag pt-bot">Bottom</span></div><div class="pos-body-inner"><div class="pos-desc">Spider, De La Riva, Lasso, Butterfly, Half Guard, X-Guard — each uses different grips/hooks.</div><div class="pos-attr"><span class="pos-al">GB1</span><span class="pos-av">Spider (7,13), DLR (8), Lasso (13), Butterfly (15), X-Guard (15)</span></div><div class="pos-attr"><span class="pos-al">Principle</span><span class="pos-av">Maintain grips, manage distance</span></div></div></div>
+      <div class="posc"><div class="pos-hdr"><span class="pos-icon">🔶</span><span class="pos-name">HALF GUARD</span><span class="pos-tag pt-bot">Bottom</span></div><div class="pos-body-inner"><div class="pos-desc">Control one of top player's legs. Offensive with underhooks or defensive to prevent full pass.</div><div class="pos-attr"><span class="pos-al">Key tools</span><span class="pos-av">Underhook, knee shield, deep half</span></div><div class="pos-attr"><span class="pos-al">Attacks</span><span class="pos-av">Underhook sweep, back take</span></div><div class="pos-attr"><span class="pos-al">GB1 Weeks</span><span class="pos-av">7, 12</span></div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- DETAIL MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+  <div class="modal" id="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-top">
+      <div class="modal-num" id="mNum">01</div>
+      <div class="modal-top-info">
+        <div class="modal-cat" id="mCat">CATEGORY</div>
+        <div class="modal-title" id="mTitle">Technique Name</div>
+        <div class="modal-week" id="mWeek">Week 1 · Class A</div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+
+    <div class="modal-actions">
+      <a class="action-btn google" id="mGoogle" href="#" target="_blank">🔍 Google Search</a>
+      <a class="action-btn yt" id="mYt" href="#" target="_blank">▶ YouTube Search</a>
+    </div>
+
+    <div class="modal-body">
+
+      <!-- YouTube Embed -->
+      <div class="modal-section">
+        <div class="yt-embed-label">GRACIE BARRA VIDEO</div>
+        <div id="ytEmbedContainer"></div>
+      </div>
+
+      <!-- Competency + Date -->
+      <div class="modal-section">
+        <div class="modal-section-title"><span class="accent">◈</span> YOUR PROGRESS</div>
+        <div class="modal-comp">
+          <div class="modal-stars" id="mStars"></div>
+          <span class="comp-label" id="mCompLabel">Not trained</span>
+        </div>
+        <div class="date-row">
+          <span class="date-label">Date trained:</span>
+          <input class="modal-date" type="date" id="mDate" onchange="modalSetDate(this.value)">
+        </div>
+      </div>
+
+      <!-- Key Highlights -->
+      <div class="modal-section">
+        <div class="modal-section-title"><span class="accent">◈</span> TECHNIQUE HIGHLIGHTS</div>
+        <div class="modal-highlights" id="mHighlights"></div>
+      </div>
+
+      <!-- Step-by-Step -->
+      <div class="modal-section">
+        <div class="modal-section-title"><span class="accent">◈</span> STEP-BY-STEP BREAKDOWN</div>
+        <div class="steps" id="mSteps"></div>
+      </div>
+
+      <!-- Common Mistakes -->
+      <div class="modal-section">
+        <div class="modal-section-title"><span class="accent">◈</span> COMMON MISTAKES</div>
+        <div class="mistakes-list" id="mMistakes"></div>
+      </div>
+
+      <!-- Tips -->
+      <div class="modal-section">
+        <div class="modal-section-title"><span class="accent">◈</span> COACH TIPS</div>
+        <div class="tips-list" id="mTips"></div>
+      </div>
+
+      <!-- Advanced Variations -->
+      <div class="modal-section">
+        <div class="modal-section-title"><span class="accent">◈</span> ADVANCED VARIATIONS</div>
+        <div class="adv-list" id="mAdvanced"></div>
+      </div>
+
+      <!-- Related Techniques -->
+      <div class="modal-section">
+        <div class="modal-section-title"><span class="accent">◈</span> RELATED TECHNIQUES</div>
+        <div class="related-grid" id="mRelated"></div>
+      </div>
+
+      <!-- Notes -->
+      <div class="modal-section">
+        <div class="modal-section-title"><span class="accent">◈</span> YOUR NOTES</div>
+        <textarea class="modal-notes" id="mNotes" placeholder="Add personal notes, what needs work, key feelings from drilling..." oninput="modalSetNotes(this.value)"></textarea>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════
+
+const TECHNIQUES = [
+  {id:1,week:1,cls:"A",cat:"Self-Defense",name:"Escape from Sidemount with Punches + Recovering the Guard + Technical Lift",
+   h:["Clinch","Hip elevation","Technical lift"],
+   steps:[{t:"Cover and clinch",d:"As punches come from sidemount, turn into the opponent to achieve a clinch position, protecting your head."},
+          {t:"Hip elevation",d:"Drive hips upward explosively to create space and disrupt the opponent's base."},
+          {t:"Technical lift",d:"Post one hand on the ground, bring a knee up, and use the technical lift to safely return to standing or recover guard."}],
+   mistakes:["Turning away instead of into the opponent — this exposes your back","Forgetting to cover the face before initiating the escape","Landing flat on your back after the lift instead of recovering guard"],
+   tips:["The clinch must be tight before you move — a loose clinch gets you hit","Hip elevation is a full-body explosive movement, not just a glute bridge","Train the technical lift separately as a standalone drill"],
+   advanced:[{t:"Transition to Double Leg",d:"From the clinch in sidemount, use the hip elevation to level-change directly into a double leg takedown."}],
+   related:[2,3,4,28]},
+
+  {id:2,week:1,cls:"A",cat:"Guard Bottom",name:"Pulling to Closed Guard Using the Foot on the Hip",
+   h:["Control the arm","Break the posture","Foot on the biceps"],
+   steps:[{t:"Grip the collar and sleeve",d:"Establish a collar grip with one hand and sleeve/wrist control with the other."},
+          {t:"Foot on the hip",d:"Place your foot on the opponent's hip to create distance and off-balance them."},
+          {t:"Break posture and pull to guard",d:"Use the collar grip to pull the head down as you bring your legs around to close the guard."}],
+   mistakes:["Pulling without breaking posture first — a strong posture resists the pull","Foot placement too high (on the stomach) loses leverage","Not locking the guard tight once established"],
+   tips:["The foot on the hip is a lever — use it to create the angle needed to pull effectively","Think of it as pulling their head to your chest, not pulling yourself up"],
+   advanced:[{t:"Closed Guard to Triangle",d:"Once guard is closed and posture is broken, immediately attack with a triangle choke using the same collar control."},{t:"Ankle Pick entry",d:"From the foot-on-hip position, if opponent resists the pull, transition to an ankle pick takedown."}],
+   related:[3,5,6,8,9]},
+
+  {id:3,week:1,cls:"A",cat:"Guard Bottom",name:"Scissor Sweep",
+   h:["Opponent posts leg up","Foot on the hip","Post on the elbow"],
+   steps:[{t:"Break posture and grip",d:"Pull the opponent's posture down. Get a collar grip (same-side) and a sleeve grip (opposite side)."},
+          {t:"Scissor position",d:"Place your top shin across the opponent's stomach/belt line and the bottom foot behind their knee."},
+          {t:"Sweep",d:"Execute a scissor motion — pull with your top knee across their body while sweeping their leg with your bottom leg, simultaneously pulling the collar down."}],
+   mistakes:["Attempting the sweep without first breaking posture — gives the opponent time to post","Bottom leg not behind the knee — loses the lever","Sweeping straight back instead of to the side at an angle"],
+   tips:["The collar grip controls their posture AND their fall — keep it tight through the sweep","Your body should be at a 45° angle to the opponent, not parallel","Think 'chop the tree' with your bottom leg"],
+   advanced:[{t:"Scissor Sweep to Armbar",d:"If opponent posts a hand to defend the sweep, keep their sleeve grip and transition directly to an armbar."},{t:"Hip Bump Combination",d:"Attempt hip bump sweep first; when opponent leans forward to resist, flow directly into the scissor sweep."}],
+   related:[2,8,9,12]},
+
+  {id:4,week:1,cls:"B",cat:"Self-Defense",name:"Escape from Mount with Punches + Bridge + Posture from Closed Guard",
+   h:["Clinch","Hip elevation","Inside hand position"],
+   steps:[{t:"Cover and protect",d:"Cover your face with both forearms as punches land from the mounted position."},
+          {t:"Trap arm and leg",d:"Catch the punching arm with both hands and trap the same-side leg with your leg to prevent posting."},
+          {t:"Bridge and roll",d:"Plant your foot, explode upward with a hip bridge, and roll the opponent to the side."},
+          {t:"Establish closed guard posture",d:"Land in closed guard, lock your legs, and immediately establish good posture from the bottom."}],
+   mistakes:["Bridging without trapping the arm and leg — opponent will post and stay on top","Bridging to the wrong side (away from the trapped arm)","Forgetting to lock guard after the roll"],
+   tips:["The trap must happen in one motion — bridge immediately after trapping, don't pause","Bridge to the shoulder of the trapped arm, not straight up"],
+   advanced:[{t:"Elbow Escape Combination",d:"If the bridge fails, immediately switch to elbow escape (shrimping) to recover guard."},{t:"Bridge to Back Take",d:"If opponent bases strongly, use the bridge momentum to take their back instead."}],
+   related:[20,21,23,92]},
+
+  {id:5,week:1,cls:"B",cat:"Guard Bottom",name:"X Collar Choke from Closed Guard — Four Fingers Inside Collar",
+   h:["Break the posture","Hip escape","Deep grip"],
+   steps:[{t:"Break posture",d:"Use a collar and sleeve grip to pull the opponent's posture down so their head is near your chest."},
+          {t:"First collar grip",d:"Insert four fingers inside the collar on one side, driving your knuckles into the back of the neck."},
+          {t:"Second cross grip",d:"Cross your other arm over and insert four fingers inside the collar on the opposite side — forming an X."},
+          {t:"Finish",d:"Expand your chest and pull elbows outward/downward while squeezing both forearms — compresses both carotid arteries."}],
+   mistakes:["Grip too shallow — fingers must go deep into the collar","Opponent's chin tucked blocking the choke — must break posture first","Arms not forming a true X — the cross is essential for the choke to work"],
+   tips:["The choke works on blood flow — squeeze like you're trying to touch your elbows together","If the opponent postures up, let them — transition to the thumb-in variation (Technique 6)"],
+   advanced:[{t:"Arm Triangle Combination",d:"If opponent defends by pushing your arms away, isolate one arm and transition to an arm triangle."},{t:"X Choke to Armbar",d:"If opponent defends by grabbing your wrists, free one arm and attack with a straight armbar."}],
+   related:[6,8,9,74]},
+
+  {id:6,week:1,cls:"B",cat:"Guard Bottom",name:"X Collar Choke from Closed Guard — Thumb Inside Collar",
+   h:["Opponent maintains posture","Opponent exposes neck","Grip over"],
+   steps:[{t:"React to opponent posturing",d:"When opponent postures up and exposes their neck, this creates the opportunity for the thumb-in variation."},
+          {t:"Thumb-in grip",d:"Insert one thumb inside the collar on one side, driving deep into the neck."},
+          {t:"Cross collar grip",d:"Cross your other arm and establish a four-finger collar grip on the opposite side."},
+          {t:"Finish",d:"Pull elbows to the mat while squeezing, using chest expansion to complete the choke."}],
+   mistakes:["Using thumb-in on a broken posture — four-fingers works better when head is down","Not going deep enough with the thumb grip","Failing to cross — without the X your arms block each other"],
+   tips:["The thumb-in is best when the opponent's neck is exposed and they're sitting up","This choke is very tight when applied correctly — the thumb creates a tighter bite on the artery"],
+   advanced:[{t:"Choke to Omoplata",d:"If opponent defends both collar grips, underhook one arm and transition to an omoplata."},{t:"Standing Guard Opening Counter",d:"When opponent stands to pass, reestablish grips and attempt X choke from the modified guard."}],
+   related:[5,8,9,11]},
+
+  {id:7,week:2,cls:"A",cat:"Self-Defense",name:"Bear Hug Escape Over the Arms + Hip Throw",
+   h:["Create space","Hip step","Throw execution"],
+   steps:[{t:"Create space",d:"Drop your weight and drive your hips back to create separation from the bear hug grip over your arms."},
+          {t:"Hip step and entry",d:"Step your hip across to the inside position, loading the opponent onto your hip."},
+          {t:"Hip throw",d:"Drive your hips forward and pull them over while bending forward — executing the hip throw to the mat."}],
+   mistakes:["Not lowering your level first — attempting the throw upright reduces power","Step placement too far or too close","Forgetting to control the opponent's arm during the throw — they can post and recover"],
+   tips:["The throw is powered by your hips, not your arms — focus on hip drive","Step so your hip is across their center of gravity"],
+   advanced:[{t:"Bear Hug to Double Leg",d:"If hip throw is blocked, lower further and transition to a double leg takedown."},{t:"Bear Hug to Arm Bar",d:"After throw, maintain arm control and immediately transition to an armbar from the top."}],
+   related:[10,43,46,67]},
+
+  {id:8,week:2,cls:"A",cat:"Guard Bottom",name:"Basic Triangle Choke from the Guard Bottom",
+   h:["Angle off","Leg placement","Squeeze and finish"],
+   steps:[{t:"Break posture and create angle",d:"Pull the opponent down and hip escape to create a 45° angle — essential for the triangle."},
+          {t:"Leg placement",d:"Throw one leg over the shoulder of the targeted arm, locking behind the opponent's neck. The other leg cuts across the back of the first knee."},
+          {t:"Isolate the arm",d:"Ensure only one arm is inside the triangle — pull the other arm across their body."},
+          {t:"Squeeze and finish",d:"Squeeze your knees together, pull the head down, and raise your hips to complete the choke."}],
+   mistakes:["Not angling off — a straight-on triangle is nearly impossible to finish","Both arms inside the triangle — only one arm should be in","Legs not fully locked — opponent can posture out"],
+   tips:["Angle is everything in the triangle — hip escape before throwing the leg","If you can't finish, pull the head down with both hands and re-squeeze"],
+   advanced:[{t:"Triangle to Armbar",d:"If opponent stacks to defend, grab the near sleeve and transition to a straight armbar."},{t:"Omoplata from Failed Triangle",d:"If opponent defends by pulling their arm out, use the leg already over the shoulder to transition to omoplata."},{t:"Gogoplata",d:"Advanced choke using the shin across the throat instead of the back of the knee."}],
+   related:[9,11,57,74]},
+
+  {id:9,week:2,cls:"A",cat:"Guard Bottom",name:"Basic Armbar from the Guard Bottom",
+   h:["Break posture","Control wrist","Hip up and finish"],
+   steps:[{t:"Break posture and grip",d:"Pull the opponent's posture down. Control the wrist of the target arm with both hands."},
+          {t:"Pivot and leg position",d:"Hip escape to the side of the target arm, throw one leg over the head and one leg across the body."},
+          {t:"Hip elevation",d:"Drive hips upward against the elbow joint — the crook of your hip should press on their elbow."},
+          {t:"Finish",d:"Squeeze knees together, pull the wrist toward your chest with thumbs pointing up, and raise hips to apply pressure on the elbow joint."}],
+   mistakes:["Knees apart — allows opponent to stack or pull arm out","Thumb pointing down — must be up for proper arm rotation","Hips not fully elevated — reduces pressure on the elbow"],
+   tips:["Control the wrist, not the forearm — you need the wrist for rotation","If opponent stacks you, maintain grip and angle to the side to recover"],
+   advanced:[{t:"Armbar to Triangle",d:"If opponent defends by pulling arm out, immediately throw the leg over for a triangle choke."},{t:"Juji-Gatame from Standing",d:"If the opponent stands to pass, use leg push and hip rotation to execute armbar from a dynamic position."}],
+   related:[8,11,56,59,84]},
+
+  {id:10,week:2,cls:"B",cat:"Self-Defense",name:"Bear Hug Escape Under the Arms + Double Leg Takedown",
+   h:["Frame under arms","Drop level","Double leg finish"],
+   steps:[{t:"Frame and create space",d:"When grabbed under the arms, drop your weight and drive elbows down to create frames against the hips."},
+          {t:"Drop level",d:"Lower your level by bending your knees — get your hips below the opponent's hips."},
+          {t:"Double leg entry",d:"Step one foot between their legs, shoot the other forward, and drive your shoulder into their hips while wrapping both legs."},
+          {t:"Finish and control",d:"Drive forward and up, depositing the opponent on the mat, and transition to top control."}],
+   mistakes:["Level too high — makes the shoot ineffective","Head outside — should be on the inside of the hips during the shot","Not driving through after catching the legs"],
+   tips:["The shot is powered by leg drive, not arm pulling — think of running through the person","Head position is critical — inside head protects you and adds power"],
+   advanced:[{t:"Double Leg to Single Leg",d:"If opponent defends one leg, transition to a single leg and finish with a trip or elevation."},{t:"Double Leg to Back",d:"If opponent sprawls aggressively, use their momentum to take their back."}],
+   related:[7,13,40,67]},
+
+  {id:11,week:2,cls:"B",cat:"Guard Bottom",name:"Hip Escape + Omoplata from the Guard Bottom",
+   h:["Hip escape","Leg over shoulder","Sit up and control"],
+   steps:[{t:"Hip escape",d:"Shrimp out to create the angle needed for the omoplata."},
+          {t:"Leg over the shoulder",d:"Throw your leg over the opponent's shoulder on the target arm side."},
+          {t:"Lock the position",d:"Sit up, bring your outside leg across the back to lock the position. Prevent opponent from rolling by controlling their back."},
+          {t:"Shoulder lock",d:"Apply the shoulder rotation by pressing their wrist toward the mat and rotating their arm."}],
+   mistakes:["Not angling off enough — the omoplata needs a clear side angle","Allowing opponent to roll out — must control the back immediately","Reaching for the submission before controlling the position"],
+   tips:["The omoplata is a position as much as a submission — control first, submit second","If they roll, follow them and transition to a guard sweep"],
+   advanced:[{t:"Omoplata to Sweep",d:"If opponent defends by keeping arm tight, use the omoplata position to sweep forward and come on top."},{t:"Omoplata to Back Take",d:"From the locked omoplata, if they posture, climb up their back."}],
+   related:[8,9,12,75]},
+
+  {id:12,week:2,cls:"B",cat:"Guard Bottom",name:"Hip Escape + Flower Sweep from the Guard Bottom",
+   h:["Hip escape","Grip the ankle","Kick through"],
+   steps:[{t:"Break posture",d:"Pull the opponent's posture down to initiate the sequence."},
+          {t:"Hip escape and grip",d:"Hip escape to one side, grabbing the same-side ankle with your hand."},
+          {t:"Kick through",d:"Kick your other leg upward and through, using the momentum to sweep the opponent over the grabbed ankle."},
+          {t:"Follow to top",d:"Follow the sweep to come on top in mount."}],
+   mistakes:["Not gripping the ankle low enough — fingers must wrap around the heel","Kicking without breaking posture first","Not following through to mount — ending up in a poor position"],
+   tips:["The kick is like a bicycle kick — it powers the sweep","Combine with scissor sweep: if scissor fails, switch to flower sweep mid-attempt"],
+   advanced:[{t:"Flower Sweep to Armbar",d:"After the sweep, if their arm is extended, immediately attack the armbar from the mounted position."},{t:"Two-Directional Combination",d:"Attack scissor sweep one direction, then flower sweep the other — opponent cannot defend both."}],
+   related:[3,9,26,29]},
+
+  {id:13,week:3,cls:"A",cat:"Self-Defense",name:"Jab Slip to Double Leg Takedown",
+   h:["Jab slip","Control the calves","Inside hand position"],
+   steps:[{t:"Slip the jab",d:"As the jab comes, slip to the outside by moving your head off the line of attack while dropping your level."},
+          {t:"Level change and shoot",d:"Immediately drop level and shoot your lead leg between opponent's feet."},
+          {t:"Wrap the calves",d:"Wrap both arms around the calves at shin level with inside hand positioning."},
+          {t:"Finish",d:"Drive forward and upward, dumping the opponent and transitioning to sidemount."}],
+   mistakes:["Slipping to the inside — exposes you to the cross","Too slow on the level change after the slip — creates a gap","Head outside during the shot"],
+   tips:["The slip and shoot must be one fluid motion — practice the combination repeatedly","Control calves, not knees — gives better leverage for the takedown"],
+   advanced:[{t:"Jab Slip to Single Leg",d:"After slipping, if opponent steps back, attack a single leg instead."},{t:"Slip to Collar Tie and Knee",d:"Slip into a collar tie clinch and use knee strikes before the takedown."}],
+   related:[7,10,40,64]},
+
+  {id:14,week:3,cls:"A",cat:"Guard Top",name:"Safe Posture + Opening the Guard on the Knees + Elbows Closed",
+   h:["Hand controlling the hip","Knee blocking the hip","Elbows closed"],
+   steps:[{t:"Establish safe posture",d:"Sit up tall in the guard, creating distance. One hand on their hip, one hand on their knee. Elbows tight to prevent grip access."},
+          {t:"Knee positioning",d:"Walk your knees toward the opponent's hips — your knee blocks their hip rotation to prevent submissions."},
+          {t:"Stack the hip",d:"Place one hand flat on their hip/stomach, driving weight downward to pin the hips."},
+          {t:"Open the guard",d:"Once hips are controlled, use a knee-and-push motion to open the guard at the feet — never try to pry it open."}],
+   mistakes:["Elbows out — makes collar grips and arm attacks easy","Rushing to open before controlling the hips","Leaning forward — puts your head in danger"],
+   tips:["Patience — establish control before opening","Keep your hips heavy and forward to prevent hip escape"],
+   advanced:[{t:"Posture to Knee Slide",d:"Once guard is open, immediately enter the knee slide pass."},{t:"Posture to Toreando",d:"Once guard is open, control both ankles and execute the toreando pass."}],
+   related:[15,17,18,32,33,62]},
+
+  {id:15,week:3,cls:"A",cat:"Guard Top",name:"One Arm Under Leg Guard Pass + Sidemount Control",
+   h:["Shoulder under the leg","Control the lapel","Elbows closed"],
+   steps:[{t:"Open the guard and enter",d:"Open the guard and immediately drive one shoulder under one of the opponent's legs."},
+          {t:"Lapel control",d:"Reach across and control the far lapel to prevent the opponent from turning into you."},
+          {t:"Elbows closed",d:"Keep your elbows tight to the body throughout — prevents guard recovery attempts."},
+          {t:"Drive to sidemount",d:"Drive your shoulder through and forward, flattening the opponent into sidemount."}],
+   mistakes:["Shoulder not deep enough under the leg — opponent can recover guard","Forgetting lapel control — opponent turns in and re-guards","Head position too high — lose pressure"],
+   tips:["The shoulder must go deep — dig it under the hamstring, not just the knee","Your chest creates the pressure that keeps them flat"],
+   advanced:[{t:"Underhook to Mount",d:"Once in sidemount, use the underhook to transition directly to mount."},{t:"Pass to North-South",d:"If opponent tries to turn away, follow them into north-south position."}],
+   related:[14,17,18,38,39]},
+
+  {id:16,week:3,cls:"B",cat:"Self-Defense",name:"Cross Arm Grab Escape + Hip Throw",
+   h:["Grip break","Hip pivot","Throw completion"],
+   steps:[{t:"Grip break",d:"When opponent grabs your wrist or arm across the body, rotate your arm toward their thumb — the weakest point of their grip."},
+          {t:"Control their arm",d:"Immediately control their arm as you break free to prevent them from re-grabbing."},
+          {t:"Hip pivot and entry",d:"Step across with your hip to load them for the throw."},
+          {t:"Hip throw",d:"Drive hips forward and pull them over — complete the throw to the mat."}],
+   mistakes:["Rotating the wrong direction — always rotate toward the thumb","Losing their arm after the grip break — they can punch or grab again","Entry too far away — your hip must be across their center"],
+   tips:["The grip break and entry should be one motion","Practice grip breaks in isolation before adding the throw"],
+   advanced:[{t:"Cross Grab to Arm Lock",d:"After breaking the cross grab, maintain control of their arm and step to an armbar position."},{t:"Cross Grab Escape to Sweep",d:"Use their grabbing momentum against them — pull them in the direction they're pulling."}],
+   related:[7,13,19,49]},
+
+  {id:17,week:3,cls:"B",cat:"Guard Top",name:"Open the Guard on the Knees + Over the Leg Guard Pass",
+   h:["Open guard","Leg over","Sidemount control"],
+   steps:[{t:"Open the guard safely",d:"Open the guard using proper posture and hip control per Technique 14."},
+          {t:"Control the legs",d:"As guard opens, immediately grab or control the near leg to prevent guard replacement."},
+          {t:"Step over the leg",d:"Step one foot over the opponent's near leg, driving it to the mat with your hip."},
+          {t:"Settle sidemount",d:"Drop to sidemount with heavy chest pressure, blocking the hips."}],
+   mistakes:["Not controlling the leg immediately when the guard opens — opponent re-guards","Stepping over too high — your foot catches on their leg","Head not driving forward — loses pressure in sidemount"],
+   tips:["The moment the guard opens, your weight must transfer forward","Think of stepping over a low fence — controlled and deliberate"],
+   advanced:[{t:"Over-Leg to Knee on Belly",d:"Instead of sidemount, float your knee to the belly for the KOB position."},{t:"Over-Leg Pass to Mount",d:"Continue the momentum of the step to mount directly."}],
+   related:[14,15,18,38]},
+
+  {id:18,week:3,cls:"B",cat:"Guard Top",name:"Open the Guard on the Knees + Knee Slide Pass",
+   h:["Knee slide","Hips low","Sidemount control"],
+   steps:[{t:"Open the guard",d:"Open the guard using proper posture and hip control."},
+          {t:"Knee slide entry",d:"Drive your near knee across the opponent's thigh — the knee slides between their legs."},
+          {t:"Control the sleeve",d:"Grip the near sleeve to prevent guard recovery and maintain connection."},
+          {t:"Settle sidemount",d:"Clear the legs and settle into sidemount with proper pressure."}],
+   mistakes:["Knee too high — sliding over the hip instead of the thigh","Not controlling the sleeve — opponent frames and re-guards","Hips too high — reduces pressure and allows hip escape"],
+   tips:["The slide is powered by hip drive, not just leg movement","Your chest angle drives the pass — rotate your torso as you slide"],
+   advanced:[{t:"Knee Slide to Back",d:"If opponent turns away from the knee slide, follow them and take their back."},{t:"Knee Slide Combined with Underhook",d:"Add a deep underhook during the slide for tighter control through to sidemount."}],
+   related:[14,15,17,41,63]},
+
+  {id:19,week:4,cls:"A",cat:"Self-Defense",name:"Double Lapel Grab Escape + Outside Hook Takedown + Straight Armbar",
+   h:["Turn sideways","Off balance the opponent","Control the elbow"],
+   steps:[{t:"Turn sideways",d:"When both lapels are grabbed, immediately turn your body sideways to reduce the target area and create an angle."},
+          {t:"Strip one grip and control",d:"Strip one of their grips and control that arm."},
+          {t:"Outside hook",d:"Step to the outside and place an outside hook behind their heel — off balance them backward."},
+          {t:"Armbar finish",d:"As they fall, maintain arm control and transition to a straight armbar finish."}],
+   mistakes:["Staying square — makes it easy to be controlled or pushed","Not stripping a grip before attempting the throw","Losing the arm during the takedown — must maintain control throughout"],
+   tips:["The sideways turn simultaneously protects you and creates the angle for the hook","Practice the arm strip and hook as a linked movement"],
+   advanced:[{t:"Double Lapel Grab to Hip Throw",d:"Instead of outside hook, use the lapel grab momentum for a hip throw."},{t:"Outside Hook to Ground-and-Pound Control",d:"After the takedown, transition to sidemount for self-defense ground control."}],
+   related:[7,16,49,55,58]},
+
+  {id:20,week:4,cls:"A",cat:"Mount/KOB",name:"Escape from the Mount with Headlock Using the Bridge",
+   h:["Protect the neck","Push the hip","Control the biceps"],
+   steps:[{t:"Protect the neck",d:"When opponent applies headlock from mount, tuck your chin and protect the neck."},
+          {t:"Control the biceps",d:"Control the headlock arm at the bicep with both hands to prevent them from attacking further."},
+          {t:"Trap the leg",d:"Use your leg to trap their near leg to prevent posting."},
+          {t:"Bridge and roll",d:"Bridge explosively toward the headlock side, rolling the opponent off — land in guard."}],
+   mistakes:["Not protecting the neck — headlock can transition to choke","Bridging to the wrong side","Not trapping the leg — opponent posts and maintains mount"],
+   tips:["The bridge direction matches the headlock arm — bridge toward that shoulder","Control the bicep tightly so they can't post with that arm"],
+   advanced:[{t:"Bridge to Back Take",d:"If mount bridge fails, opponent may over-commit — use this to take their back."},{t:"Two-Stage Bridge",d:"Small feint bridge, then full power bridge — opponent's weight shift makes the second one more effective."}],
+   related:[21,22,23,4]},
+
+  {id:21,week:4,cls:"A",cat:"Mount/KOB",name:"Escape from the Mount with Choke Using the Bridge",
+   h:["Protect the neck","Push the hip","Control the biceps"],
+   steps:[{t:"Defend the choke",d:"When choke is applied from mount, tuck chin and use one or both hands to attack the choke grip."},
+          {t:"Create space",d:"Work to strip at least one of the choke grips to relieve pressure."},
+          {t:"Trap and bridge",d:"As you work the grip, simultaneously trap the arm and leg on one side."},
+          {t:"Bridge and roll to guard",d:"Bridge explosively, rolling opponent to the side. Land in closed guard and immediately establish posture."}],
+   mistakes:["Focusing only on the choke defense without working the escape","Bridging without having trapped the arm/leg first","Freezing — every second in a choke is dangerous"],
+   tips:["Priority: remove the choke danger while setting up the escape simultaneously","Speed matters here — don't slow down once you start"],
+   advanced:[{t:"Choke Defense to Elbow Escape",d:"If bridge is not available, switch to elbow escape (shrimping) as a secondary escape."},{t:"Grab the wrist, not the sleeve",d:"Wrist control gives you the ability to peel the grip more effectively than sleeve control."}],
+   related:[20,23,4,92,93]},
+
+  {id:22,week:4,cls:"B",cat:"Self-Defense",name:"Two Hand Throat Grab Escape + Block Knee Strike + Body Lock Takedown + Mount",
+   h:["Block the knee","Off balance opponent","Transition to mount"],
+   steps:[{t:"Defend the throat",d:"When both hands grab your throat, reach up and pin their hands with your forearms, ducking your chin."},
+          {t:"Block the knee",d:"As they attempt a knee strike, drop your arm to block the knee."},
+          {t:"Body lock clinch",d:"Shoot in and establish a body lock — arms around their torso."},
+          {t:"Takedown and mount",d:"Use the body lock to trip or lift and deposit them on the mat, transitioning directly to mount."}],
+   mistakes:["Not blocking the knee — a knee strike to the body is debilitating","Clinch too loose — opponent can break free and continue striking","Skipping the ground transition — must end in a dominant position"],
+   tips:["React to the throat grab immediately — hesitation allows them to control","The block, clinch, and takedown are a single flowing sequence"],
+   advanced:[{t:"Throat Grab to Hip Throw",d:"From the clinch established after the throat grab, transition to hip throw if body lock takedown is defended."},{t:"Mounting Defense Awareness",d:"From mount, be ready for the bridge escape — stay low and mobile."}],
+   related:[7,37,40,43]},
+
+  {id:23,week:4,cls:"B",cat:"Mount/KOB",name:"Escape from Mount — Elbows when Opponent Does Not Open Knee + Full Guard",
+   h:["Leg extended","Left hand on the leg","Catch the foot"],
+   steps:[{t:"Elbow escape setup",d:"When opponent sits high in mount and doesn't open their knees, begin shrimping (hip escaping) to one side."},
+          {t:"Drive elbow to create space",d:"Drive your elbow into the space created by your hip escape — this forces a gap between your body and theirs."},
+          {t:"Knee shield",d:"Bring your knee up through the space as a shield to prevent re-mount."},
+          {t:"Recover guard",d:"Continue hip escaping and frame to recover full closed guard."}],
+   mistakes:["Not creating enough space with the hip escape first","Knee shield too flat — needs to be vertical as a proper shield","Stopping before fully recovering guard — opponent re-advances"],
+   tips:["The hip escape is the engine of this technique — no hip escape, no elbow space","Drill the elbow escape as a flowing sequence, not separate steps"],
+   advanced:[{t:"Elbow Escape to Half Guard",d:"If full guard recovery is blocked, settle for half guard and work from there."},{t:"Elbow Escape to Single Leg",d:"As you recover, if their leg is available, attack a single leg to come on top."}],
+   related:[20,21,24,4,92,93,95]},
+
+  {id:24,week:4,cls:"B",cat:"Mount/KOB",name:"Knee on Belly Escape Pushing Belt Knot + Half Technical Lift + Ankle Pick",
+   h:["Hand on belt knot","Half technical lift","Ankle pick"],
+   steps:[{t:"Push the belt knot",d:"From under KOB, place your hand on the opponent's belt knot and push outward to disrupt their balance."},
+          {t:"Hip escape",d:"Simultaneously hip escape away from the pressure to create space."},
+          {t:"Half technical lift",d:"Come to a half-technical-lift position — posted on one hand and knee."},
+          {t:"Ankle pick and takedown",d:"Grab their near ankle and drive forward, completing the ankle pick takedown and transitioning to top position."}],
+   mistakes:["Pushing on the hip instead of the belt knot — belt knot creates better rotation","Not combining the push with hip escape — one movement needs both","Coming to base too slowly — opponent reasserts KOB"],
+   tips:["The push on the belt knot rotates their hips, creating the space for the escape","This is a fast technique — commit to the technical lift immediately"],
+   advanced:[{t:"KOB Escape to Guard Recovery",d:"If ankle pick is not available, use the technical lift to recover standing or regain guard."},{t:"KOB Escape to Double Leg",d:"From the technical lift, if opponent has both feet planted, shoot a double leg instead."}],
+   related:[23,53,84,96]},
+
+  {id:25,week:5,cls:"A",cat:"Self-Defense",name:"Blocking Punches from Closed Guard + Distance Management + Armbar",
+   h:["Block the arms","Control the arms","Knee heavy on shoulder"],
+   steps:[{t:"Block and control arms",d:"As punches come in closed guard, block and control the punching arms — trap the arms against your chest."},
+          {t:"Distance management",d:"Keep knees together and use hips to maintain proper distance — neither too close nor too far."},
+          {t:"Set up armbar",d:"Control one arm, place your knee heavy on the shoulder of the target arm."},
+          {t:"Armbar finish",d:"Throw leg over the head, hip up, and complete the armbar."}],
+   mistakes:["Letting go of distance management — single punches can still land","Knee not heavy on the shoulder before attempting armbar — they post out","Armbar set up with elbow pointing wrong direction"],
+   tips:["Think of controlling distance first — the submission comes after you're safe","Knee on shoulder is the key transitional point"],
+   advanced:[{t:"Armbar to Triangle",d:"If opponent pulls arm out, immediately transition to triangle choke."},{t:"Closed Guard Strike Counter to Triangle",d:"Block the punch, control the arm, triangle choke directly without armbar setup."}],
+   related:[8,9,26,28,76]},
+
+  {id:26,week:5,cls:"A",cat:"Guard Bottom",name:"Pull Feet Sweep with Opponent Standing from Closed Guard",
+   h:["Knees together","Foot on the belt","Hips forward"],
+   steps:[{t:"Adjust as opponent stands",d:"When opponent stands in your guard, keep your knees together and maintain connection to their body."},
+          {t:"Foot on the belt/hip",d:"Place both feet on opponent's hips or belt line to control distance and create leverage."},
+          {t:"Pull the feet",d:"Grab both ankles while feet are on hips — create a push-pull motion."},
+          {t:"Sweep",d:"Push with feet and pull with hands simultaneously, sweeping the opponent backward."}],
+   mistakes:["Feet too high on the stomach — reduces leverage","Releasing feet grip before pushing — the sweep needs both actions together","Not following to top position after the sweep"],
+   tips:["This sweep works when opponent stands to pass — time it to that moment","Feet on hips create the frame, hands on ankles are the fulcrum"],
+   advanced:[{t:"Standing Guard to X-Guard",d:"From the feet-on-hips position, if they step forward, transition to X-guard."},{t:"Push Sweep to Standing",d:"Follow the sweep by technical lifting to feet for a standing takedown combination."}],
+   related:[27,29,30,47,89]},
+
+  {id:27,week:5,cls:"A",cat:"Guard Bottom",name:"Waiter Sweep",
+   h:["Trap the ankles","Point opponent's knee outwards","Foot on the belt"],
+   steps:[{t:"Establish position",d:"With opponent in your guard, get foot on the belt/hip and trap their near ankle."},
+          {t:"Point their knee outward",d:"Rotate their leg so their knee points away — this breaks their base on that side."},
+          {t:"Execute sweep",d:"Use foot on hip to push while pulling the trapped ankle — opponent falls to the side of the trapped leg."}],
+   mistakes:["Not rotating the knee outward first — opponent's base remains strong","Pushing and pulling in the wrong directions","Losing foot position on the belt during the sweep"],
+   tips:["The knee rotation is the key detail — without it, the sweep has little effect","Practice this as a combination with tripod sweep (Tech 29)"],
+   advanced:[{t:"Waiter to Leg Lock",d:"The ankle grip from the waiter sweep is a direct entry into leg lock positions."},{t:"Waiter to Back Take",d:"If sweep is defended, use the ankle control to transition to a back take."}],
+   related:[26,29,30,47,90]},
+
+  {id:28,week:5,cls:"B",cat:"Self-Defense",name:"Blocking Punches from Closed Guard + Distance Management + Up Kick + Technical Lift",
+   h:["Hip elevation and knees pushing away","Low kicks","Block back hand punch"],
+   steps:[{t:"Block and manage distance",d:"Block incoming punches and manage distance with knee shields in closed guard."},
+          {t:"Low kicks",d:"Use low kicks to the thighs to create pain and disruption while managing distance."},
+          {t:"Up kick",d:"When space opens, use an upward kick to the face/chin to stun and create separation."},
+          {t:"Technical lift",d:"As opponent is stunned or backs away, perform the technical lift to safely return to standing."}],
+   mistakes:["Up kick with wrong timing — must have space first","Technical lift without checking opponent's status — they may continue attacking","Staying on the ground too long after the up kick"],
+   tips:["The sequence is defensive-to-offensive: block, create space, counter, escape","Technical lift is your exit strategy — practice it until automatic"],
+   advanced:[{t:"Up Kick to Double Leg",d:"After the up kick creates separation, if opponent rushes back in, meet them with a double leg takedown."}],
+   related:[25,26,29,76]},
+
+  {id:29,week:5,cls:"B",cat:"Guard Bottom",name:"Tripod Sweep",
+   h:["Knee pushing away","Hook the ankle","Half technical lift"],
+   steps:[{t:"Feet on hips",d:"Place feet on opponent's hips to create distance and control their posture."},
+          {t:"Grab the ankle",d:"Reach down and grab one ankle with your hand on the same side as your foot."},
+          {t:"Push and hook",d:"Push one foot into their hip while hooking/pulling the ankle of the same side — create a tripod effect."},
+          {t:"Sweep and follow",d:"The push-pull creates a rotation that sweeps them. Follow to top position."}],
+   mistakes:["Not combining the push and pull simultaneously","Grabbing too high up the shin instead of the ankle","Not following through to top position quickly enough"],
+   tips:["The tripod uses three points of contact: two feet and one hand — understand the geometry","This is one of the most reliable sweeps against a standing opponent"],
+   advanced:[{t:"Tripod to De La Riva",d:"If tripod fails, the foot on the hip is already in De La Riva hook position — transition directly."},{t:"Tripod to Ankle Lock",d:"Maintain ankle grip after the sweep for a direct ankle lock entry."}],
+   related:[26,27,30,47,89]},
+
+  {id:30,week:5,cls:"B",cat:"Guard Bottom",name:"Outside Hook Sweep when Opponent Defends the Tripod Sweep",
+   h:["Opponent blocks the foot on hip","Outside hook","Off balance the opponent"],
+   steps:[{t:"Attempt tripod sweep",d:"Initiate the tripod sweep — opponent defends by blocking or moving the foot off the hip."},
+          {t:"Transition to outside hook",d:"As their defense opens the outside of their leg, immediately transition your foot to an outside hook behind their knee."},
+          {t:"Off balance",d:"Pull their ankle while pushing with the outside hook — rotate them in the opposite direction from the original tripod attempt."},
+          {t:"Sweep and follow",d:"Complete the sweep and follow to top position."}],
+   mistakes:["Pausing between the failed tripod and the outside hook — must transition immediately","Hook placement too high on the thigh — needs to be behind the knee","Not changing direction — this sweep goes the opposite way from the tripod"],
+   tips:["This is a combination — the outside hook is the 'B' of an 'A-B' attack","Drill the transition so it becomes automatic when tripod is defended"],
+   advanced:[{t:"Outside Hook to Leg Lock",d:"The outside hook position is also a heel hook entry if the rule set allows."},{t:"Three-Way Attack",d:"Tripod → Outside Hook → Back Take. Each defense creates the next attack."}],
+   related:[26,27,29,47]},
+
+  {id:31,week:6,cls:"A",cat:"Self-Defense",name:"Defense Against the Tackle + Guillotine Choke",
+   h:["Sprawl","Guillotine grip","Finish the choke"],
+   steps:[{t:"Sprawl",d:"As the tackle comes, shoot your hips backward and drop your weight onto the opponent's back — the sprawl."},
+          {t:"Guillotine grip",d:"As you sprawl, wrap one arm under the chin and lock the choking position around their neck."},
+          {t:"Pull up and apply pressure",d:"Arch your back and pull the neck upward while squeezing the choke."},
+          {t:"Finish standing or to guard",d:"Finish standing or drop to guard with the guillotine locked."}],
+   mistakes:["Sprawl too slow — they complete the tackle","Choke arm too low (on the chest, not the neck)","Losing the choke when going to the mat"],
+   tips:["The sprawl and choke grip must happen simultaneously","High elbow on the choking arm creates the bite on the neck"],
+   advanced:[{t:"Guillotine to Arm-In Guillotine",d:"If opponent defends the standard guillotine, transition to arm-in version (Tech 34) for a tighter choke."},{t:"Failed Guillotine to Back Take",d:"If choke is fully defended, release and take the back."}],
+   related:[34,43,46,52]},
+
+  {id:32,week:6,cls:"A",cat:"Guard Top",name:"Toreando Guard Pass + Sidemount Control",
+   h:["Control both legs","Step to side","Sidemount control"],
+   steps:[{t:"Control both legs",d:"From standing in opponent's guard, control both legs at the knees or ankles."},
+          {t:"Push down and step",d:"Push both legs to one side while simultaneously stepping around to the other side."},
+          {t:"Drive to sidemount",d:"Drop your weight forward into sidemount as legs are cleared."},
+          {t:"Establish sidemount control",d:"Lock in sidemount with proper pressure, blocking hips."}],
+   mistakes:["Not controlling both legs — one free leg can frame or re-guard","Stepping around too slowly — opponent recovers position","Not following the legs all the way down before entering"],
+   tips:["The toreando is a speed pass — commit fully and enter fast","Drop your weight immediately as you clear the legs — don't hover"],
+   advanced:[{t:"Toreando to Back",d:"If opponent turns away from the pass, skip sidemount and take the back directly (Tech 35)."},{t:"Double Toreando",d:"Fake one direction, opponent rotates to defend, redirect and pass the other way."}],
+   related:[33,35,36,41,68]},
+
+  {id:33,week:6,cls:"A",cat:"Guard Top",name:"X-Pass + Sidemount Control",
+   h:["Push the knee","Angle out","Sidemount control"],
+   steps:[{t:"Push the near knee",d:"From opponent's open guard, use both hands to push one knee to the mat."},
+          {t:"Angle your body",d:"Step your body to the outside of the pushed knee, creating the 'X' angle."},
+          {t:"Drive through",d:"Drive your weight and chest through to sidemount, keeping the leg controlled."},
+          {t:"Sidemount",d:"Settle into sidemount with heavy pressure."}],
+   mistakes:["Pushing the wrong knee (far instead of near)","Not completing the angular step — staying square loses the pass","Head position too high — reduces weight transfer"],
+   tips:["The X-pass and toreando are complementary — use toreando when they sit up, X-pass when they're flat","The angle step is the key moment — make it decisive"],
+   advanced:[{t:"X-Pass to Back",d:"If they turn to avoid the pass, take the back (Tech 36)."},{t:"X-Pass to Knee on Belly",d:"Float directly to KOB from the X-pass entry."}],
+   related:[32,35,36,65,66]},
+
+  {id:34,week:6,cls:"B",cat:"Self-Defense",name:"Defense Against the Tackle + Arm-In Guillotine Choke",
+   h:["Sprawl","Arm in","Finish choke"],
+   steps:[{t:"Sprawl",d:"Shoot hips back and drop weight as the tackle comes in."},
+          {t:"Arm-in guillotine entry",d:"Wrap your arm under the chin WITH their arm inside the choke — more constricting than the standard version."},
+          {t:"Lock and finish",d:"Lock the choke with your free hand on top of the choking hand. Arch back, squeeze."},
+          {t:"Finish standing",d:"Keep them standing — the arm-in guillotine is strongest when not on the ground."}],
+   mistakes:["Going to the ground with the arm-in guillotine — opponent can often escape on the mat","Choke arm not tight enough to the neck — creates space that weakens the choke","Hips not arched — reduces the choke pressure"],
+   tips:["The arm-in makes the choke tighter because it removes the space for their shoulder","Keep opponent vertical if possible — the choke is more effective standing"],
+   advanced:[{t:"Arm-In to Guard Finish",d:"If you do go to ground, immediately lock full guard around their body to prevent escape."},{t:"Arm-In to D'Arce Choke",d:"The arm-in position is also the entry for a D'Arce choke if their head is on the outside."}],
+   related:[31,43,46,51]},
+
+  {id:35,week:6,cls:"B",cat:"Guard Top",name:"Toreando Guard Pass Forcing Opponent to Turn",
+   h:["Force the turn","Control hips","Maintain pressure"],
+   steps:[{t:"Initiate toreando",d:"Begin the toreando pass motion — opponent anticipates and turns away to prevent the pass."},
+          {t:"Recognize the turn",d:"As they turn away, recognize the back is being offered."},
+          {t:"Control hips and follow",d:"Maintain hip control as they turn — follow their rotation."},
+          {t:"Back control",d:"Establish back control with hooks."}],
+   mistakes:["Continuing into sidemount when the back is clearly available","Losing hip control during the transition","Not establishing hooks immediately upon taking the back"],
+   tips:["Train yourself to recognize when opponent turns — it's a gift","The transition from toreando to back must be smooth and immediate"],
+   advanced:[{t:"Back to Bow and Arrow",d:"Once back control is established, attack with bow and arrow choke."},{t:"Double Guard Pass Sequence",d:"Use toreando as the first attack, leg drag as the second — cover both reactions."}],
+   related:[32,33,36,66,87]},
+
+  {id:36,week:6,cls:"B",cat:"Guard Top",name:"X-Pass + Opponent Turns + Back Control",
+   h:["X-pass","Opponent turns","Back control"],
+   steps:[{t:"X-pass entry",d:"Begin the X-pass, pushing the near knee."},
+          {t:"Opponent turns to defend",d:"As you drive through, opponent turns away — back is exposed."},
+          {t:"Follow the turn",d:"Keep contact and follow their rotation without losing position."},
+          {t:"Establish back control",d:"Lock in hooks and seatbelt for full back control."}],
+   mistakes:["Passing to sidemount when back is available","Losing contact during the transition","Seatbelt not locked — opponent can turn back in"],
+   tips:["The back is always available when they turn — train your eyes to see it","Back control from guard pass is one of the smoothest transitions in BJJ"],
+   advanced:[{t:"Back to RNC",d:"From back control, attack rear naked choke."},{t:"Back to Bow and Arrow Choke",d:"Establish bow and arrow choke from the back control position."}],
+   related:[32,33,35,51,54,66]},
+
+  {id:37,week:7,cls:"A",cat:"Self-Defense",name:"Distance Management with Arm + Front Push Kick + Body Lock Takedown + Sidemount",
+   h:["Shoulder protects face","Knee blocks the leg","Untie the hand grips"],
+   steps:[{t:"Distance management",d:"Use your lead arm and shoulder to manage distance — protect your face with shoulder raised."},
+          {t:"Front push kick",d:"When opponent closes distance, execute a front push kick to their midsection to reset distance."},
+          {t:"Body lock on entry",d:"When opponent comes back in, shoot into a body lock clinch."},
+          {t:"Takedown to sidemount",d:"Use the body lock to complete a takedown — trip or dump — and transition to sidemount."}],
+   mistakes:["Shoulder too low — exposes the face","Push kick too high — can be caught","Body lock too loose — opponent breaks out"],
+   tips:["Distance management is a constant skill — shoulder up is your default","The push kick creates time and resets the engagement"],
+   advanced:[{t:"Push Kick to Double Leg",d:"If they catch the kick, immediately drop to a double leg."},{t:"Push Kick to Takedown Combination",d:"Push kick, clinch, body lock, trip takedown as a flowing sequence."}],
+   related:[7,10,22,40,43]},
+
+  {id:38,week:7,cls:"A",cat:"Guard Top",name:"Open the Guard on the Knees + Over the Leg Guard Pass",
+   h:["Hip pressure","Grip on the knee","Elevate the hips"],
+   steps:[{t:"Open the guard with hip pressure",d:"Use hip pressure downward on opponent's thighs to open the guard — combined with knee positioning."},
+          {t:"Grip the knee",d:"As guard opens, grip the near knee to control the leg."},
+          {t:"Elevate and pass",d:"Elevate your hips over the near leg and step to the other side."},
+          {t:"Sidemount",d:"Clear the leg and settle into sidemount."}],
+   mistakes:["Hip pressure too light — guard doesn't open","Grip on the knee too loose — leg recovers","Step over too high — foot catches on their leg"],
+   tips:["Think of the hip pressure as hip pressure, not force — it's weight, not push","The knee grip guides the leg, not holds it"],
+   advanced:[{t:"Over-Leg to Mount",d:"Once over the leg, continue forward to mount instead of sidemount."},{t:"Combination with Knee Slide",d:"Fake over-leg, switch to knee slide when opponent defends."}],
+   related:[14,15,17,39,62]},
+
+  {id:39,week:7,cls:"A",cat:"Guard Top",name:"Half Guard Pass Using Hook + Hip Elevation + Transition to Mount",
+   h:["Hook foot inside the leg","Shoulder heavy","Elevate the hips"],
+   steps:[{t:"Inside hook",d:"From half guard top, insert a hook inside between opponent's legs — foot hooks inside their near leg."},
+          {t:"Heavy shoulder",d:"Drive your shoulder into their face/chest to create pressure and prevent hip escape."},
+          {t:"Elevate hips",d:"Lift your hips while maintaining the hook — creates the elevation needed to clear their leg."},
+          {t:"Pass to mount",d:"As their leg is freed, swing the freed leg over and transition to mount."}],
+   mistakes:["Hook not deep enough — leg not properly controlled","Shoulder too light — opponent escapes with underhook","Elevating hips too early before the hook is secure"],
+   tips:["The hook and shoulder work together — both must be established before elevating","Practice the hip elevation movement in isolation"],
+   advanced:[{t:"Half Guard Pass to Back",d:"If opponent turns to avoid the mount transition, take their back instead."},{t:"Half Guard to Leg Lock Entry",d:"From the half guard hook position, transition to a heel hook if opponent extends."}],
+   related:[15,17,18,38,71,72]},
+
+  {id:40,week:7,cls:"B",cat:"Self-Defense",name:"Distance Management with Arm + Jab + Cross + Double Leg",
+   h:["Shoulder protects face","Force the high block","Step in between the legs"],
+   steps:[{t:"Distance management and jab",d:"Use arm and shoulder for distance. Throw a jab to get a reaction."},
+          {t:"Cross to force high block",d:"Follow with a cross — opponent raises both arms to block."},
+          {t:"Level change and entry",d:"As their guard goes high, immediately drop level and shoot between the legs."},
+          {t:"Double leg finish",d:"Complete the double leg with forward drive."}],
+   mistakes:["Jab and cross not convincing — opponent doesn't react with a high block","Level change too slow — window closes","Head outside during the shot"],
+   tips:["The double leg is set up by the punches — they must be real threats","The high block reaction is the signal to shoot"],
+   advanced:[{t:"Jab-Cross to Single Leg",d:"If double leg is defended, switch to single leg."},{t:"Jab-Cross to Body Lock",d:"If opponent ducks the punches, clinch into a body lock."}],
+   related:[13,22,37,43,46]},
+
+  {id:41,week:7,cls:"B",cat:"Guard Top",name:"Spider Guard Bull-Fight Pass Turning the Wheel + Sidemount Control",
+   h:["Turn the wheel","Keep the grips","Control the legs"],
+   steps:[{t:"Identify spider guard",d:"Opponent has sleeve grips with feet on your biceps — spider guard."},
+          {t:"Grip and turn the wheel",d:"Control their ankles/legs and rotate them — 'turning the wheel' removes their framing power."},
+          {t:"Stack and drive",d:"As the wheel rotation removes their guard structure, drive forward and through."},
+          {t:"Sidemount",d:"Establish sidemount control."}],
+   mistakes:["Not maintaining sleeve control — they'll re-establish spider grips","Rotating in the wrong direction — must rotate to fold their structure, not flatten it","Pausing mid-rotation — must commit fully"],
+   tips:["The rotation direction should fold their legs across their body, not out to the side","This pass requires commitment — a half-hearted rotation doesn't work"],
+   advanced:[{t:"Wheel Turn to Leg Lock",d:"The rotation can fold one leg into a knee bar or heel hook entry."},{t:"Combined with Hips-Forward Variation",d:"Use hips-forward spider pass (Tech 42) when wheel rotation is being defended."}],
+   related:[42,32,33,77,78]},
+
+  {id:42,week:7,cls:"B",cat:"Guard Top",name:"Spider Bull-Fight Pass with Hips Forward + Sidemount Control",
+   h:["Adjust the grips","Hips forward","Maintain the grips"],
+   steps:[{t:"Adjust grips on legs",d:"Control both of opponent's legs — adjust grips to control inside or outside of the legs."},
+          {t:"Drive hips forward",d:"Push your hips forward aggressively into the spider guard frame — compresses their structure."},
+          {t:"Clear legs and pass",d:"With hips forward and legs controlled, clear one leg and step to sidemount."},
+          {t:"Sidemount",d:"Settle with pressure."}],
+   mistakes:["Hips too far back — spider guard maintains its power","Grip too close to the knee — needs to be at the ankle/calf for better control","Not driving through once hips are forward — must complete the pass"],
+   tips:["Hips forward removes their framing leverage — think of collapsing their structure","This pass and the wheel pass are used in combination — if one is defended, use the other"],
+   advanced:[{t:"Hip Forward to Leg Weave",d:"Drive hips forward, then weave under one leg to create a leg weave pass."},{t:"Combination Pass Flow",d:"Wheel turn → Hips forward → Knee slide — use all three in a flowing combination."}],
+   related:[41,32,33,77,78]},
+
+  {id:43,week:8,cls:"A",cat:"Self-Defense",name:"Clinch + Dirty Boxing + Knee Strike + Body Lock Takedown",
+   h:["Clinch control","Dirty boxing","Knee strike timing"],
+   steps:[{t:"Establish clinch",d:"Shoot into a clinch to neutralize punching range — control their head and one arm."},
+          {t:"Dirty boxing",d:"From the clinch, use short punches, elbows, and palm strikes to wear the opponent down."},
+          {t:"Knee strike",d:"Create space and deliver a knee strike to the midsection or thigh."},
+          {t:"Body lock takedown",d:"After the knee, lock the body and complete the takedown to the ground."}],
+   mistakes:["Clinch too passive — must be controlling, not just holding","Knee strike telegraphed — should come from the clinch without a clear warning","Not completing the takedown after the knee — ends the sequence in a dangerous position"],
+   tips:["The clinch is a weapon, not a safe space — use it actively","Dirty boxing in the clinch wears opponent down and creates takedown opportunities"],
+   advanced:[{t:"Thai Plum",d:"Establish Thai plum (double collar tie) for more knee strike control and to prevent underhook."},{t:"Knee Strike to Guillotine",d:"If opponent drops their head after the knee, shoot a guillotine choke."}],
+   related:[7,22,31,37,40,46]},
+
+  {id:44,week:8,cls:"A",cat:"Guard Bottom",name:"Hip Escape Recovering Guard Against the Over-the-Leg Pass",
+   h:["Hip escape","Frame","Recover guard"],
+   steps:[{t:"Recognize the pass",d:"Identify when opponent is attempting an over-the-leg pass."},
+          {t:"Hip escape early",d:"Begin hip escaping (shrimping) immediately — earlier is better."},
+          {t:"Frame",d:"Use forearms as frames against their hips or shoulder to create space."},
+          {t:"Bring knee in",d:"Bring your knee in between you and the opponent to reconstruct your guard."}],
+   mistakes:["Reacting too late — waiting until they're fully past","Framing on the face instead of hip/shoulder","Not bringing the knee all the way in — leaving a gap they pass through"],
+   tips:["Guard recovery is always about creating space with hips and filling it with knees","The hip escape and frame happen simultaneously — not sequentially"],
+   advanced:[{t:"Recovery to Single Leg",d:"As you recover guard, if their leg is available, grab a single leg and come to top."},{t:"Frame to Lasso Recovery",d:"Use the frame to transition to a lasso guard position."}],
+   related:[45,68,69,23]},
+
+  {id:45,week:8,cls:"A",cat:"Guard Bottom",name:"Hip Escape Recovering Guard Against the Knee Slide Pass",
+   h:["Hip escape","Knee shield","Recover guard"],
+   steps:[{t:"Recognize the knee slide",d:"Opponent drives their knee across your thigh in a knee slide."},
+          {t:"Hip escape to create space",d:"Hip escape toward the knee slide to create space."},
+          {t:"Knee shield",d:"Bring your knee up as a shield between you and the passing knee."},
+          {t:"Recover guard",d:"Use the shield to prevent the pass and reconstruct full guard."}],
+   mistakes:["Hip escaping away from the knee slide — moves toward the pass, not away from it","Knee shield too flat — must be vertical to effectively stop the slide","Not locking guard once recovered"],
+   tips:["The key is escaping toward the knee — counterintuitive but correct","Your knee shield stops the slide; your hip escape creates the space for the shield"],
+   advanced:[{t:"Knee Shield to Lasso",d:"From the knee shield position, wrap the lasso grip around their arm for lasso guard."},{t:"Knee Shield to Half Guard Attack",d:"If knee slide is partially complete, use knee shield to fight from half guard."}],
+   related:[44,68,69,71]},
+
+  {id:46,week:8,cls:"B",cat:"Self-Defense",name:"Clinch + Thai Plum + Knee Strike + Hip Throw",
+   h:["Thai plum grip","Knee strike","Hip throw"],
+   steps:[{t:"Establish Thai plum",d:"Control both sides of the back of the head with both hands — the double collar tie (Thai plum)."},
+          {t:"Control posture",d:"Pull the head down and forward to expose the knee target."},
+          {t:"Knee strike",d:"Drive the knee into the midsection — multiple knee strikes if needed."},
+          {t:"Hip throw",d:"Transition grip from plum to hip throw entry — execute the throw."}],
+   mistakes:["Thai plum grip too shallow — on the hair, not behind the neck","Head not pulled down enough — knee doesn't land on midsection","Transition to hip throw too telegraphed — opponent defends"],
+   tips:["The Thai plum controls the entire upper body — it's one of the most powerful clinch positions","The knee strike flows naturally into the hip throw — they share the same posture control"],
+   advanced:[{t:"Thai Plum to Guillotine",d:"From the Thai plum, if opponent ducks to escape, shoot a guillotine."},{t:"Multiple Knees Before Throw",d:"Use 2-3 knee strikes to wear down resistance before the throw — don't rush to the throw."}],
+   related:[7,43,22,31,34]},
+
+  {id:47,week:8,cls:"B",cat:"Guard Bottom",name:"De la Riva Guard + Sweep",
+   h:["De la riva hook","Control sleeve","Sweep execution"],
+   steps:[{t:"Establish DLR hook",d:"Wrap your outside leg around the outside of opponent's near leg — this is the De la Riva hook."},
+          {t:"Sleeve grip",d:"Control the same-side sleeve with your hand."},
+          {t:"Off balance",d:"Use the hook and sleeve to off balance the opponent — pull sleeve while pushing with the hook."},
+          {t:"Sweep",d:"Push through with your free foot on the hip and sweep them backward."}],
+   mistakes:["Hook not deep enough — loses the DLR connection","Sleeve grip on the wrong side","Not combining all three points of contact in the sweep"],
+   tips:["The DLR hook is the foundation — everything else builds on it","Think of the hook as a lever that controls their entire leg"],
+   advanced:[{t:"DLR to Berimbolo",d:"From DLR, if opponent postures, transition to a berimbolo back take."},{t:"DLR to X-Guard",d:"From DLR, if opponent steps forward, transition to X-guard."},{t:"DLR to Single Leg X",d:"From DLR, lift the leg into single leg X-guard for a sweep."}],
+   related:[48,26,29,77,78]},
+
+  {id:48,week:8,cls:"B",cat:"Guard Bottom",name:"De la Riva Guard + Back Take",
+   h:["De la riva hook","Opponent rises","Back take"],
+   steps:[{t:"Establish DLR",d:"Set up DLR hook and sleeve control per Technique 47."},
+          {t:"Recognize the back take opportunity",d:"When opponent postures up or tries to circle out, the back becomes available."},
+          {t:"Roll and take the back",d:"Use the DLR hook to roll under the opponent as they rise — come out behind them."},
+          {t:"Establish back control",d:"Lock in hooks and seatbelt."}],
+   mistakes:["Attempting the back take before opponent rises","Roll direction wrong — must roll toward the hook side","Not establishing hooks immediately after taking the back"],
+   tips:["The DLR to back take is one of the smoothest transitions in guard — timing with their movement is everything","The roll should be compact and tight — not a large roll"],
+   advanced:[{t:"Back Take to Bow and Arrow",d:"From the back, immediately attack with bow and arrow choke."},{t:"DLR Back Take to RNC",d:"From the back control established via DLR, attack the rear naked choke."}],
+   related:[47,50,51,54,35,36]},
+
+  {id:49,week:9,cls:"A",cat:"Self-Defense",name:"Defense Side Headlock Standing + Arm Bar",
+   h:["Control the forearm","Step behind","Arm bar finish"],
+   steps:[{t:"Protect and control",d:"When caught in a side headlock standing, control the choking arm at the forearm with both hands."},
+          {t:"Step behind",d:"Step one foot behind their same-side foot — creates the base for the throw and prevents escape."},
+          {t:"Take down",d:"Using the foot placement, trip them backward to the ground while controlling the arm."},
+          {t:"Armbar finish",d:"Maintain arm control through the fall and transition directly to an armbar."}],
+   mistakes:["Not controlling the forearm first — they can choke harder","Stepping to the wrong side","Losing arm control during the takedown"],
+   tips:["The forearm control must be immediate — before doing anything else","Step close to their foot — creates a tight, efficient throw"],
+   advanced:[{t:"Side Headlock to Hip Throw",d:"Instead of stepping behind, use the headlock position to enter a hip throw."},{t:"Side Headlock to Americana on the Ground",d:"After the takedown, if armbar is defended, transition to Americana."}],
+   related:[55,58,16,19]},
+
+  {id:50,week:9,cls:"A",cat:"Mount/KOB",name:"Mount Position + Transition to the Back",
+   h:["Trap arm","Step over","Back control"],
+   steps:[{t:"High mount establishment",d:"Move to high mount — knees near opponent's armpits, controlling their head."},
+          {t:"Trap one arm",d:"Isolate and trap one of their arms — pin it with your body or hands."},
+          {t:"Step over",d:"Step one leg over their body, transitioning your weight to one side."},
+          {t:"Back control",d:"Roll to the back as they turn — establish hooks and seatbelt."}],
+   mistakes:["Attempting transition without securing an arm first — they can roll you","Transition too slow — they create space and recover","Hooks not in before settling — they turn back in"],
+   tips:["The arm trap is the key — it prevents them from turning into you as you transition","Move in one fluid motion — hesitation loses position"],
+   advanced:[{t:"Back to Bow and Arrow",d:"From back control, attack bow and arrow choke."},{t:"Mount Transition to Arm Bar",d:"If arm trap reveals an extended arm, attack armbar directly from mount instead of transitioning."}],
+   related:[51,53,54,35,36,48]},
+
+  {id:51,week:9,cls:"A",cat:"Mount/KOB",name:"Rear Mount Control + Bow and Arrow Choke",
+   h:["Hook grip","Collar control","Bow and arrow finish"],
+   steps:[{t:"Establish back control",d:"Full back control: seatbelt grip, both hooks in."},
+          {t:"Collar grip",d:"Thread your choking hand deep into the collar — four fingers inside."},
+          {t:"Leg hook on same-side leg",d:"Hook the same-side leg of the choking arm — prevents them from rolling toward you."},
+          {t:"Bow and arrow finish",d:"Extend your body like drawing a bow — pull the collar as you extend away. The leg hook makes the finishing angle precise."}],
+   mistakes:["Collar grip too shallow","Leg hook missing — they roll and escape","Extension direction wrong — must extend the body, not just pull the arm"],
+   tips:["The bow and arrow is extremely tight when correct — the leg hook adds the mechanical advantage","Practice the extension motion — it's like pulling a bow, hence the name"],
+   advanced:[{t:"Bow and Arrow to Triangle",d:"If they defend the collar, maintain leg hook and transition to back triangle."},{t:"Bow and Arrow from Side Control",d:"The same choke can be applied from side control after rolling to the back."}],
+   related:[50,53,54,34,46]},
+
+  {id:52,week:9,cls:"B",cat:"Self-Defense",name:"Defense Front Headlock + Arm Bar",
+   h:["Tuck chin","Hip escape","Arm bar"],
+   steps:[{t:"Tuck the chin",d:"When caught in a front headlock (guillotine position), immediately tuck the chin to protect the neck."},
+          {t:"Hip escape and posture",d:"Hip escape to one side and posture up — fight the grip with your body."},
+          {t:"Isolate the arm",d:"As you posture, isolate their choking arm."},
+          {t:"Arm bar finish",d:"Complete the armbar from the standing or ground position."}],
+   mistakes:["Not tucking chin — allows choke to tighten","Trying to pull the head straight out without side movement","Losing the arm during the transition"],
+   tips:["Chin tuck is immediate — before any other movement","Posture up with your spine, not just your head — full body involvement"],
+   advanced:[{t:"Front Headlock Escape to Double Leg",d:"Posture out of the headlock and immediately shoot a double leg."},{t:"Front Headlock to Neck Crank",d:"If rule set permits, use the front headlock position for a neck crank while transitioning."}],
+   related:[31,34,49,43]},
+
+  {id:53,week:9,cls:"B",cat:"Mount/KOB",name:"Knee on Belly + Transition to the Back",
+   h:["KOB control","Opponent bridges","Back take"],
+   steps:[{t:"Establish KOB",d:"Control opponent from knee on belly — knee on solar plexus, hands controlling collar and far arm."},
+          {t:"React to their bridge",d:"When opponent bridges to escape the KOB pressure, their back momentarily faces you."},
+          {t:"Follow the rotation",d:"Follow their rotation fluidly — don't resist their escape, use it."},
+          {t:"Take the back",d:"Land behind them and establish hooks and seatbelt."}],
+   mistakes:["Resisting their bridge instead of flowing with it","Too slow to follow the rotation — they complete the escape to guard","Hooks not immediately established — they turn back in"],
+   tips:["KOB creates discomfort that generates reactions — learn to read and use those reactions","The back take from KOB is effortless when you follow their movement"],
+   advanced:[{t:"KOB Back Take to Bow and Arrow",d:"From the back taken via KOB, immediately attack bow and arrow choke."},{t:"Fake KOB to Back",d:"Fake KOB pressure to generate the bridge reaction, then take the back without completing KOB."}],
+   related:[50,51,54,24,84]},
+
+  {id:54,week:9,cls:"B",cat:"Mount/KOB",name:"Rear Mount + Rear Naked Choke",
+   h:["Hooks in","Seatbelt grip","RNC finish"],
+   steps:[{t:"Full back control",d:"Establish both hooks inside opponent's legs. Seatbelt grip: one arm over the shoulder, one arm under the opposite armpit."},
+          {t:"Seat belt adjustment",d:"Adjust so the choking arm (over the shoulder) is on top — this arm will go around the neck."},
+          {t:"RNC application",d:"Slide the top arm across the throat — elbow under the chin. Bring hand to bicep of the under arm. Squeeze like a boa constrictor."},
+          {t:"Head control",d:"Press your head to theirs and tuck — prevents their defense of grabbing your head."}],
+   mistakes:["Hooks out — opponent turns in and escapes","Elbow above chin instead of under — dramatically reduces choke effectiveness","Arm too shallow — wrist instead of bicep on the neck"],
+   tips:["The RNC is the most efficient choke in combat sports — applied correctly it's inescapable","Seatbelt adjustment before the choke saves time — don't skip it"],
+   advanced:[{t:"RNC Defense Counter",d:"If they defend RNC by grabbing your arm, transition to a bow and arrow choke."},{t:"Body Triangle",d:"Replace hooks with a body triangle for a tighter back control that also applies pressure."}],
+   related:[51,53,50,34,83]},
+
+  {id:55,week:10,cls:"A",cat:"Self-Defense",name:"Escape Side Headlock on the Ground + Americana",
+   h:["Bridge escape","Arm isolation","Americana finish"],
+   steps:[{t:"Protect and create space",d:"When caught in side headlock on the ground, tuck chin and bridge to create space."},
+          {t:"Arm isolation",d:"Isolate their headlock arm — prevent them from adjusting."},
+          {t:"Americana position",d:"Bring their arm to an L-shape — wrist up, elbow bent at 90°."},
+          {t:"Americana finish",d:"Control the wrist with one hand, use the other to press the elbow down and the arm rotates into the joint lock."}],
+   mistakes:["Not protecting the neck — headlock can become a choke","Americana on the wrong arm — lock the arm that's doing the headlock","Not pinning the elbow close to the body — they can pull arm free"],
+   tips:["The Americana applies force to the shoulder joint — precision beats strength","Wrist and elbow control must both be secure before applying pressure"],
+   advanced:[{t:"Americana to Kimura",d:"If they defend by straightening the arm, transition to kimura."},{t:"Ground Headlock to Mount",d:"Instead of submitting from side headlock position, use the bridge to end in mount."}],
+   related:[58,56,57,60]},
+
+  {id:56,week:10,cls:"A",cat:"Mount/KOB",name:"Straight Armbar from the Mount",
+   h:["Weight on the hands","Leg positioning","Bend the legs"],
+   steps:[{t:"High mount",d:"Move to high mount with knees near armpits. Control their posture."},
+          {t:"Make them post",d:"Create a threat that makes opponent post one arm — or isolate the target arm."},
+          {t:"Step over the head",d:"Plant one foot by their head and swing the other leg over — positioning around their arm."},
+          {t:"Armbar finish",d:"Squeeze knees, pull wrist to chest (thumb up), elevate hips. Lean back to complete."}],
+   mistakes:["Knees apart — opponent escapes","Thumb pointing down","Staying seated — hips must come up for full extension"],
+   tips:["This flows naturally from high mount — mount → S-mount → armbar is a common sequence","Control the wrist, not the forearm"],
+   advanced:[{t:"Mount Armbar to Triangle",d:"If they pull arm out, immediately triangle."},{t:"S-Mount Entry",d:"Use S-mount as the transitional position — one leg across the chest, one pinning the head."}],
+   related:[9,57,60,84,59]},
+
+  {id:57,week:10,cls:"A",cat:"Mount/KOB",name:"Triangle Choke from the Mount",
+   h:["Control posture","Leg over","Triangle finish"],
+   steps:[{t:"High mount control",d:"Establish high mount with arm control."},
+          {t:"Leg over one shoulder",d:"Throw one leg over one shoulder — opponent's arm must be outside your leg."},
+          {t:"Lock triangle",d:"Lock your ankles behind their neck. Make sure only one arm is inside."},
+          {t:"Squeeze and finish",d:"Squeeze legs together, pull head down, raise hips."}],
+   mistakes:["Attempting from low mount — angle is wrong","Both arms inside","Legs not fully locked — opponent stands out"],
+   tips:["From mount, the triangle attacks naturally when opponent tries to push you off","The mount triangle is tighter than the guard triangle — less space to escape"],
+   advanced:[{t:"Mount Triangle to Armbar",d:"If they defend, transition to armbar on the isolated arm."},{t:"Mount Triangle to Omoplata",d:"Transition to omoplata if they pull the arm out."}],
+   related:[8,9,56,60,81]},
+
+  {id:58,week:10,cls:"B",cat:"Self-Defense",name:"Escape Side Headlock Standing with Punches",
+   h:["Control the forearm","Control the wrist","Posture"],
+   steps:[{t:"Control choking arm",d:"Control their choking arm immediately — forearm and wrist control."},
+          {t:"Protect from punches",d:"Use head movement and posture to protect from incoming punches from their free hand."},
+          {t:"Create escape",d:"Use footwork, hip movement, or the takedown to escape the headlock."},
+          {t:"Counter",d:"Follow up with a counter — armbar, throw, or strike combination."}],
+   mistakes:["Freezing — standing headlock with punches is an emergency situation","Head staying in the headlock too long","Not controlling the free arm or anticipating punches"],
+   tips:["React immediately — every second in a standing headlock with punches is dangerous","The forearm control prevents the choke from tightening while you work the escape"],
+   advanced:[{t:"Standing Headlock to Takedown",d:"Drive into them using the headlock as a clinch entry — takedown to dominant ground position."},{t:"Standing Headlock Escape to Rear Position",d:"Step behind them to take their back."}],
+   related:[49,55,19,16]},
+
+  {id:59,week:10,cls:"B",cat:"Mount/KOB",name:"Straight Armbar from the Mount (variation)",
+   h:["Weight on the hands","Leg positioning","Bend the legs"],
+   steps:[{t:"Maintain mount",d:"Maintain mount control while identifying the target arm."},
+          {t:"Arm isolation variation",d:"Use a different entry — isolate the arm from a different angle than Technique 56."},
+          {t:"Leg positioning",d:"Position legs around the arm carefully."},
+          {t:"Finish",d:"Complete the armbar with proper mechanics."}],
+   mistakes:["Same as Technique 56 — knees apart, thumb down, no hip elevation"],
+   tips:["Learn both armbar entries from mount — some situations favor one over the other","The core mechanics are identical — the variation is in the entry"],
+   advanced:[{t:"Combination with Key Lock",d:"Fake the armbar, opponent defenses — immediately transition to key lock (Tech 60)."}],
+   related:[56,57,60,9]},
+
+  {id:60,week:10,cls:"B",cat:"Mount/KOB",name:"Key Lock from the Mount",
+   h:["Control elbow and wrist","Use body weight","Elbow on the floor"],
+   steps:[{t:"Isolate the arm",d:"From mount, isolate one arm — either it's extended or you can trap it."},
+          {t:"Wrist and elbow control",d:"Control the wrist with one hand, hook under the elbow with the other forearm."},
+          {t:"Pin elbow to floor",d:"Press the elbow toward the mat using your body weight — not just arm strength."},
+          {t:"Americana finish",d:"Drive the wrist toward the mat in a windshield wiper motion — shoulder rotates into the lock."}],
+   mistakes:["Using arm strength instead of body weight — key lock requires weight, not force","Elbow not pinned — they lift it and defend","Wrist going in the wrong direction"],
+   tips:["The key lock (Americana) requires the elbow on the floor — without that, no submission","Think of the motion as painting a rainbow with their wrist"],
+   advanced:[{t:"Key Lock to Armbar",d:"If they defend by straightening, immediately armbar."},{t:"Key Lock to Kimura",d:"Switch to kimura if they defend by bending the elbow more."}],
+   related:[55,56,57,59,80]},
+
+  {id:61,week:11,cls:"A",cat:"Self-Defense",name:"Block the Hook Punch + Hip Throw + Straight Armbar with Knee on Belly",
+   h:["High block","Side step","Knee blocking the hips"],
+   steps:[{t:"Block the hook",d:"Use a high block against a hook punch — arm up to intercept."},
+          {t:"Side step",d:"Step outside the punch to an advantageous angle."},
+          {t:"Hip throw",d:"From the side step, enter the hip throw position and execute."},
+          {t:"Armbar with KOB",d:"As they land, maintain arm control, place knee on belly, and apply the armbar."}],
+   mistakes:["Block too passive — must intercept firmly","Side step too small — ends up in danger","Losing arm control during the throw"],
+   tips:["The block, step, and throw are one motion — practice the combination slowly then speed it up","KOB armbar from standing is very fast — the throw places you in position"],
+   advanced:[{t:"Hook Block to Clinch",d:"Instead of immediate throw, clinch and work from there."},{t:"Hook Block to Counter Hook",d:"Block and immediately return a hook to the head."}],
+   related:[40,13,56,84]},
+
+  {id:62,week:11,cls:"A",cat:"Guard Top",name:"Open the Guard on the Knees with Two Hands on the Belt",
+   h:["Elbows closed","Block the hips","Post the leg up"],
+   steps:[{t:"Safe posture",d:"Establish safe posture in guard."},
+          {t:"Two hands on the belt",d:"Place both hands on opponent's belt — this controls their hips and prevents submissions."},
+          {t:"Block hips and open",d:"Drive weight down through the belt grip, blocking their hips. Use a knee to open the guard."},
+          {t:"Post and pass",d:"Post one leg up as the guard opens — immediately transition to a pass."}],
+   mistakes:["Hands too high on the stomach — reduces control","Not blocking the hips first — they hip escape and attempt sweeps","Opening guard without a pass ready"],
+   tips:["Belt grip with hips blocked gives you a safe moment to choose your pass","Practice immediately entering a pass the moment the guard opens"],
+   advanced:[{t:"Belt Grip to Knee Slide",d:"From the open guard with belt grip, slide knee for knee slide pass."},{t:"Belt Grip to Toreando",d:"Control pants at the knees from the opened guard for toreando pass."}],
+   related:[14,38,63,17,18]},
+
+  {id:63,week:11,cls:"A",cat:"Guard Top",name:"Knee Slide Guard Pass Controlling the Sleeve",
+   h:["Push the leg away","Control the sleeve","Underhook"],
+   steps:[{t:"Sleeve control",d:"Before the knee slide, establish sleeve control on the same side as the pass."},
+          {t:"Push the leg away",d:"Use your free hand or leg to push the near leg away, creating the path for the knee slide."},
+          {t:"Knee slide",d:"Slide your knee across their thigh while maintaining sleeve control."},
+          {t:"Underhook and sidemount",d:"Get the underhook and settle into sidemount."}],
+   mistakes:["Knee slide without sleeve control — opponent frames and recovers","Pushing the wrong leg away","Not getting the underhook — sidemount control suffers"],
+   tips:["Sleeve control is the secret ingredient — it stops the frame that kills the knee slide","The sleeve grip prevents them from bringing the elbow down to block the knee"],
+   advanced:[{t:"Sleeve Knee Slide to Back",d:"If they turn to avoid, take the back as in Tech 66."},{t:"Sleeve Control Transition to Kimura",d:"From the sleeve control in sidemount, attack a kimura."}],
+   related:[18,41,62,65,66]},
+
+  {id:64,week:11,cls:"B",cat:"Self-Defense",name:"Block the Uppercut + Double Leg + Transition to KOB",
+   h:["Slip outside","Control hips","KOB transition"],
+   steps:[{t:"Slip the uppercut",d:"Slip to the outside of the uppercut — move head and body off the line."},
+          {t:"Double leg",d:"From the outside slip, immediately drop level and shoot a double leg."},
+          {t:"Complete takedown",d:"Finish the double leg with forward drive."},
+          {t:"Transition to KOB",d:"As they land, transition to knee on belly instead of sidemount."}],
+   mistakes:["Slipping to the inside — gets clipped by the punch","Level change too slow after the slip","Not transitioning to KOB — misses the control position"],
+   tips:["The outside slip of an uppercut is a very strong position — you're behind their line of attack","KOB from the double leg takedown is a fast, natural transition"],
+   advanced:[{t:"Uppercut Slip to Back",d:"If they turn during the takedown, take the back instead of KOB."},{t:"Combination Attack",d:"Jab-cross-uppercut defense: slip the uppercut, double leg."}],
+   related:[13,40,61,84,53]},
+
+  {id:65,week:11,cls:"B",cat:"Guard Top",name:"Leg Drag Guard Pass + Sidemount Control",
+   h:["Drag the leg","Stack weight","Sidemount control"],
+   steps:[{t:"Control the near leg",d:"Grip the near leg at the ankle or pants."},
+          {t:"Drag the leg",d:"Pull/drag the near leg across the opponent's body — removes their guard structure."},
+          {t:"Stack weight",d:"Stack your weight over them as you drag, preventing hip escape."},
+          {t:"Settle sidemount",d:"Clear the leg and establish sidemount."}],
+   mistakes:["Dragging without stacking — they hip escape and recover","Drag direction wrong — needs to go across their body, not out to the side","Not pinning the leg after dragging — they recover"],
+   tips:["The leg drag is a control pass — use weight, not speed","Drag and stack simultaneously — they work together"],
+   advanced:[{t:"Leg Drag to Back",d:"If they turn away from the drag, take the back (Tech 66)."},{t:"Leg Drag to Mount",d:"Continue forward from the drag to mount instead of sidemount."}],
+   related:[66,32,33,87,68,69]},
+
+  {id:66,week:11,cls:"B",cat:"Guard Top",name:"Leg Drag Guard Pass + Opponent Turns + Back Control",
+   h:["Leg drag","Opponent turns","Back control"],
+   steps:[{t:"Leg drag entry",d:"Begin the leg drag as in Tech 65."},
+          {t:"Opponent turns away",d:"As the drag removes their guard structure, they may turn away to prevent the pass."},
+          {t:"Follow the turn",d:"Follow their rotation — don't enter sidemount, follow their back."},
+          {t:"Back control",d:"Establish hooks and seatbelt from the back."}],
+   mistakes:["Forcing sidemount when the back is available","Too slow to follow the turn","Not getting hooks in before they turn back"],
+   tips:["Back from leg drag is one of the most common and smooth back takes in competition BJJ","The drag removes their hips — the turn is their attempt to recover; use it"],
+   advanced:[{t:"Back from Leg Drag to Bow and Arrow",d:"Attack bow and arrow immediately from the back taken via leg drag."},{t:"Leg Drag Pass Combination",d:"Leg drag to sidemount if they stay; leg drag to back if they turn — cover both."}],
+   related:[65,35,36,51,54,87]},
+
+  {id:67,week:12,cls:"A",cat:"Self-Defense",name:"Rear Bear Hug Escape Over the Arms + Body Lock Takedown",
+   h:["Drop weight","Step around","Body lock takedown"],
+   steps:[{t:"Drop weight",d:"When grabbed from behind over the arms, drop your weight by bending knees — makes the hold harder to maintain."},
+          {t:"Create space",d:"Drive elbows down and outward to break the grip or create space."},
+          {t:"Step around",d:"Step to one side, pivoting to face the opponent."},
+          {t:"Body lock takedown",d:"Establish a body lock and complete the takedown."}],
+   mistakes:["Staying rigid — dropping weight is the first move","Pivoting the wrong way","Losing the body lock grip during takedown"],
+   tips:["Weight drop is immediate and automatic — it's your first reaction","The pivot must be fast — opponent will re-grip if you're slow"],
+   advanced:[{t:"Rear Bear Hug to Hip Throw",d:"From the pivot position, enter a hip throw."},{t:"Rear Bear Hug to Elbow Strike",d:"Before pivoting, throw elbow strikes backward to the face."}],
+   related:[70,7,10,94]},
+
+  {id:68,week:12,cls:"A",cat:"Guard Bottom",name:"Hip Escape Recovering Guard Against the Toreando Pass",
+   h:["Hip escape","Inside position","Recover guard"],
+   steps:[{t:"Recognize the toreando",d:"Identify toreando when both your legs are being controlled and pushed to one side."},
+          {t:"Hip escape early",d:"As soon as legs are pushed, hip escape in the opposite direction."},
+          {t:"Frame and get inside",d:"Frame against their hip to prevent them driving through."},
+          {t:"Recover guard",d:"Bring knee in and reconstruct guard."}],
+   mistakes:["Reacting too late — they're already past","Escaping the wrong direction","Not using the inside frame to stop the drive"],
+   tips:["Guard recovery is always possible if you react early — drill the timing","The frame on the hip stops their forward momentum"],
+   advanced:[{t:"Recovery to Single Leg X",d:"As you recover from the toreando, establish single leg X-guard."},{t:"Frame to DLR",d:"Use your frame to set up De La Riva hook as the toreando comes."}],
+   related:[44,45,69,32]},
+
+  {id:69,week:12,cls:"A",cat:"Guard Bottom",name:"Hip Escape Recovering Guard Against the Leg Drag Pass",
+   h:["Hip escape","Frame legs","Recover guard"],
+   steps:[{t:"Recognize the leg drag",d:"Identify leg drag when your near leg is being pulled across your body."},
+          {t:"Hip escape toward dragged leg",d:"Escape hips toward the direction your leg is being dragged — follow the drag."},
+          {t:"Frame",d:"Use forearm frames to prevent stacking."},
+          {t:"Recover guard",d:"Bring knees in and recover guard."}],
+   mistakes:["Escaping away from the drag — moves toward the pass","Not framing — gets stacked flat","Not recovering the knee as a shield"],
+   tips:["Follow the drag direction — this creates the space to recover","The leg drag relies on you resisting — don't resist, follow and recover"],
+   advanced:[{t:"Follow Drag to Single Leg",d:"As you follow the leg drag, grab their near leg for a single leg counter."},{t:"Drag Recovery to Half Guard",d:"Recover half guard if full guard isn't available."}],
+   related:[44,45,68,65]},
+
+  {id:70,week:12,cls:"B",cat:"Self-Defense",name:"Rear Bear Hug Escape Under the Arms + Hip Throw",
+   h:["Under hook escape","Hip turn","Hip throw"],
+   steps:[{t:"Drop and underhook",d:"When grabbed from behind under the arms, drop weight and establish an underhook on one side."},
+          {t:"Hip turn",d:"Pivot your hips to face the opponent using the underhook for control."},
+          {t:"Hip throw entry",d:"Get your hip across their center of gravity."},
+          {t:"Hip throw finish",d:"Complete the hip throw to the mat."}],
+   mistakes:["Not dropping weight first","Underhook too shallow — doesn't create proper control for the pivot","Hip throw entry too far — hip isn't across their body"],
+   tips:["The underhook from the rear creates the leverage needed for the pivot","Drop weight, underhook, pivot, throw — four steps, one motion"],
+   advanced:[{t:"Rear Bear Hug to Rear Takedown",d:"Instead of pivoting for hip throw, take them directly backward with a rear trip."},{t:"Rear Bear Hug Under Arms to Double Leg",d:"Turn into them and execute a double leg from the pivot."}],
+   related:[67,7,94,73]},
+
+  {id:71,week:12,cls:"B",cat:"Guard Bottom",name:"Half Guard Sweep Using the Underhook",
+   h:["Underhook deep","Knee shield","Hip escape and sweep"],
+   steps:[{t:"Establish underhook",d:"From half guard, fight for a deep underhook on one side — arm under their armpit."},
+          {t:"Knee shield",d:"Use your top knee as a shield to prevent them flattening you."},
+          {t:"Hip escape",d:"Hip escape to create the angle for the sweep."},
+          {t:"Sweep and come on top",d:"Use the underhook to drive them over and come to top position."}],
+   mistakes:["Underhook too shallow — they can counter with a cross-face","No knee shield — they flatten you and the underhook is useless","Not hip escaping — sweep direction is wrong without the angle"],
+   tips:["The underhook is the most important position in half guard — fight for it before anything else","A deep underhook + knee shield = very strong half guard offensive position"],
+   advanced:[{t:"Underhook to Back Take",d:"From the underhook position, if they posture to defend the sweep, take their back (Tech 72)."},{t:"Old School Sweep",d:"Use the underhook to grab the far ankle and sweep — the 'old school' half guard sweep."}],
+   related:[72,39,45,47]},
+
+  {id:72,week:12,cls:"B",cat:"Guard Bottom",name:"Half Guard Back Take Using the Underhook",
+   h:["Underhook","Opponent postures","Back take"],
+   steps:[{t:"Underhook established",d:"Establish deep underhook from half guard per Tech 71."},
+          {t:"Opponent postures to defend sweep",d:"As you threaten the sweep, opponent postures — their back is momentarily exposed."},
+          {t:"Take the back",d:"Use the underhook to come up behind them — taking the back."},
+          {t:"Establish hooks",d:"Lock in hooks and seatbelt from the back."}],
+   mistakes:["Attempting back take without the underhook — can't get the angle","Too slow when opponent postures — window closes quickly","Not establishing hooks before they turn back in"],
+   tips:["This is the classic half guard combination: sweep → if they posture → take the back","The back take flows from the sweep threat — they create the opening by defending"],
+   advanced:[{t:"Back Take to Bow and Arrow",d:"Attack bow and arrow choke from the back taken via half guard."},{t:"Back Take to Arm Bar",d:"From the back position, if arm is exposed, attack armbar."}],
+   related:[71,39,50,51,54]},
+
+  {id:73,week:13,cls:"A",cat:"Self-Defense",name:"Defense Bear Hug from the Back Over Arms + Throw to the Floor",
+   h:["Create space","Hip pivot","Throw to floor"],
+   steps:[{t:"Drop weight and create space",d:"Drop weight immediately — makes the hug harder to maintain and creates space."},
+          {t:"Hip pivot",d:"Drive one hip backward into the opponent — creates the leverage for the throw."},
+          {t:"Throw to the floor",d:"Use the hip pivot combined with an arm sweep to throw them to the ground."},
+          {t:"Maintain control",d:"Stay connected and transition to a dominant ground position."}],
+   mistakes:["Not pivoting the hips — trying to throw using only the arms","Throw direction unclear — commit to one side","Letting them back up after the throw"],
+   tips:["The hip is the engine of the throw — the arms direct the fall","A well-timed hip pivot can throw someone significantly larger"],
+   advanced:[{t:"Over-Arms Bear Hug to Hip Throw",d:"Same situation, execute a conventional hip throw by pivoting all the way to the front."},{t:"Bear Hug Counter to Rear Throw",d:"Instead of pivoting to the side, step behind their leg and throw them directly backward."}],
+   related:[67,70,7,94]},
+
+  {id:74,week:13,cls:"A",cat:"Guard Bottom",name:"Lasso Guard Control + Triangle Choke",
+   h:["Lasso grip","Control sleeve","Triangle finish"],
+   steps:[{t:"Establish lasso",d:"Wrap your leg around their arm — your leg goes around their bicep, creating the lasso."},
+          {t:"Sleeve control",d:"Control the same-side sleeve with your hand to maintain the lasso."},
+          {t:"Create angle for triangle",d:"Use the lasso to pull their arm across — creates the triangle setup."},
+          {t:"Triangle finish",d:"Throw leg over for the triangle and finish per Tech 8."}],
+   mistakes:["Lasso not deep enough — they pull arm out","Not maintaining sleeve control — lasso collapses","Not creating the angle — triangle from straight-on is very difficult"],
+   tips:["The lasso is one of the most powerful guard grips — it controls the entire arm","Use the lasso to pull their arm across your body — this naturally creates the triangle angle"],
+   advanced:[{t:"Lasso to Omoplata",d:"From lasso position, swing to omoplata if triangle is defended."},{t:"Lasso to Sweep",d:"Use the lasso to sweep instead of submitting — attack whichever is more open."}],
+   related:[75,8,9,11,77]},
+
+  {id:75,week:13,cls:"A",cat:"Guard Bottom",name:"Lasso Guard Control + Sweep",
+   h:["Lasso grip","Off balance","Sweep execution"],
+   steps:[{t:"Establish lasso",d:"Create lasso guard as in Tech 74."},
+          {t:"Off balance",d:"Use the lasso to off balance the opponent — pull the lasso arm while pushing with your free leg."},
+          {t:"Execute sweep",d:"Create rotation that topples them to the lasso side."},
+          {t:"Follow to top",d:"Come on top after the sweep."}],
+   mistakes:["Sweep direction not matching the off-balance direction","Not using the free leg to push while the lasso pulls","Not following to top immediately"],
+   tips:["Lasso sweep and triangle are your two weapons from lasso — attack both to keep opponent guessing","The sweep uses the lasso pull and free leg push simultaneously"],
+   advanced:[{t:"Lasso Sweep to Armbar",d:"After the sweep, maintain arm control and transition to armbar."},{t:"Lasso to Triangle to Sweep",d:"Attempt triangle, opponent defends with posture, sweep using that posture."}],
+   related:[74,77,78,26,29]},
+
+  {id:76,week:13,cls:"B",cat:"Self-Defense",name:"Distance Management from Closed Guard + Knee Shield + Upkick + Technical Lift",
+   h:["Knees together","Keep the foot on the hip","Technical lift"],
+   steps:[{t:"Knee shield distance management",d:"From closed guard, use a knee shield to manage distance from strikes."},
+          {t:"Maintain foot on hip",d:"Keep foot on the hip to control distance at all times."},
+          {t:"Upkick when space opens",d:"When opponent creates space, deliver upkick to the face."},
+          {t:"Technical lift",d:"After creating separation, perform technical lift to return to standing."}],
+   mistakes:["Knee shield not maintained — gap in defense","Foot leaving the hip — loses distance control","Technical lift without checking opponent is stunned — they rush in"],
+   tips:["This is the self-defense ground survival sequence — every part has a purpose","Upkick is only effective with proper space — don't attempt it without distance management first"],
+   advanced:[{t:"Closed Guard to Standing Takedown",d:"After technical lift, immediately re-engage with a takedown."},{t:"Ground to Standing with Clinch Entry",d:"Use upkick to stun, technical lift, then clinch for a safe takedown."}],
+   related:[25,28,26]},
+
+  {id:77,week:13,cls:"B",cat:"Guard Bottom",name:"Spider Guard Control with Opponent Bullfighting or Posturing",
+   h:["Hooks on back of elbows","Opponent takes hooks off — bullfighting","Opponent takes hooks off — posturing up"],
+   steps:[{t:"Establish spider guard",d:"Place feet on biceps with sleeve grips — both feet on both biceps."},
+          {t:"Opponent bullfights",d:"Opponent tries to clear your feet by rotating (bullfighting) — adjust grips and maintain control by re-establishing hooks."},
+          {t:"Opponent postures up",d:"Opponent stands — adjust by keeping grips and changing foot position to hips or belt."},
+          {t:"Maintain control",d:"In both cases, the goal is to maintain grip and control while looking for sweep or submission."}],
+   mistakes:["Losing sleeve grips when they bullfight","Not adjusting foot position when they posture","Being passive — must always be threatening something from spider guard"],
+   tips:["Spider guard requires constant adjustment — it's an active guard, not a passive one","The sleeve grips are the foundation of spider guard — never let them go"],
+   advanced:[{t:"Spider to Triangle",d:"Use spider guard control to set up triangle by pulling one arm across."},{t:"Spider to Sweep",d:"From spider, when opponent is off balance, execute sweep (Tech 78)."}],
+   related:[78,74,75,41,42]},
+
+  {id:78,week:13,cls:"B",cat:"Guard Bottom",name:"Spider Guard Sweep with Opponent on His Knees",
+   h:["Opponent drops the knee down","Hip escape","Turn the wheel"],
+   steps:[{t:"Opponent on knees in spider guard",d:"Opponent is on their knees inside your spider guard — you have feet on biceps."},
+          {t:"Hip escape for angle",d:"Hip escape to create a 45° angle."},
+          {t:"Turn the wheel",d:"Use a circular leg motion ('turning the wheel') to rotate opponent over."},
+          {t:"Follow to top",d:"Come on top after the sweep."}],
+   mistakes:["Attempting sweep without angling off — opponent base is too strong from straight on","Wheel rotation in wrong direction","Not following the rotation to come on top"],
+   tips:["The wheel sweep uses your legs to create rotational force — think of spinning them like a wheel","Hip escape is mandatory — the angle makes the wheel effective"],
+   advanced:[{t:"Spider Sweep to Armbar",d:"After the sweep, use the leg position to transition to armbar."},{t:"Spider Sweep Combination",d:"Attempt lasso triangle, when they defend, transition to spider sweep."}],
+   related:[77,74,75,41,42,47]},
+
+  {id:79,week:14,cls:"A",cat:"Self-Defense",name:"Defense Against Mounted Punches + Bridge Escape",
+   h:["Cover up","Bridge and roll","Recover guard"],
+   steps:[{t:"Cover and protect",d:"Use forearms to cover face from mounted punches."},
+          {t:"Trap the arm",d:"Catch one punching arm and trap it."},
+          {t:"Trap the leg",d:"Trap the same-side leg with your leg."},
+          {t:"Bridge and recover guard",d:"Bridge explosively to roll them off, land in closed guard."}],
+   mistakes:["Covering without looking for the trap opportunity","Bridging without trapping","Not recovering guard immediately after landing on top"],
+   tips:["You must be both defensive and offensive simultaneously — cover AND trap","The moment you have the arm and leg trapped, bridge immediately"],
+   advanced:[{t:"Mounted Punch Defense to Elbow Escape",d:"If bridge fails, immediately switch to elbow escape as backup."},{t:"Mounted Punch Defense to Clinch",d:"When they pause punching, clinch and roll to guard."}],
+   related:[4,20,21,92,93]},
+
+  {id:80,week:14,cls:"A",cat:"Mount/KOB",name:"Ezequiel Choke from the Mount",
+   h:["Control head","Arm placement","Choke finish"],
+   steps:[{t:"High mount",d:"Establish high mount with control."},
+          {t:"Arm through sleeve",d:"Thread one forearm through the crook of your other arm's sleeve/collar — creating the tool for the choke."},
+          {t:"Apply to the neck",d:"Press the forearm across the throat while the other arm supports — the choke applies to the carotid."},
+          {t:"Squeeze and finish",d:"Squeeze both arms together to complete the choke."}],
+   mistakes:["Arm not threaded properly through the sleeve","Applying to the chin instead of throat/neck","Opponent tucks chin — must maintain head control to expose the neck"],
+   tips:["The Ezequiel is one of the few chokes you can hit from inside someone's guard — it's also excellent from mount","Head control prevents the chin tuck that defends the choke"],
+   advanced:[{t:"Ezequiel to Armbar",d:"If they defend the Ezequiel, the defending arm becomes the target for an armbar."},{t:"Ezequiel from Guard Top",d:"The Ezequiel can also be applied to an opponent while you're in their closed guard — a rare and surprising attack."}],
+   related:[56,57,60,81,83]},
+
+  {id:81,week:14,cls:"A",cat:"Mount/KOB",name:"Arm Triangle Choke from the Mount",
+   h:["Drive arm across","Head positioning","Finish tight"],
+   steps:[{t:"Isolate the arm",d:"From mount, isolate one arm — drive it across their body (against their neck)."},
+          {t:"Head position",d:"Drop your head to the mat on the same side as the trapped arm — this tightens the choke."},
+          {t:"Lock the choke",d:"Wrap your arm around their head and behind their neck — clasping hands (or using a gable grip)."},
+          {t:"Slide to finish",d:"Slide off to the side of the trapped arm to apply the arm triangle choke."}],
+   mistakes:["Not driving the arm tight against the neck — gap allows them to breathe","Head not on mat — reduces choke pressure","Not sliding to the side before finishing — finishing from mount reduces efficiency"],
+   tips:["The arm triangle uses their own arm to choke them — the arm must be tight against their neck","Think of it as 'hugging' their head tight to your chest"],
+   advanced:[{t:"Arm Triangle to D'Arce",d:"If they defend by turning, the position can become a D'Arce choke."},{t:"Arm Triangle Entry from Side Control",d:"Set up the arm triangle from side control before transitioning to mount for the finish."}],
+   related:[56,57,80,60]},
+
+  {id:82,week:14,cls:"B",cat:"Self-Defense",name:"Defense Against Mounted Punches + Elbow Escape",
+   h:["Frame elbows","Wiggle hips","Knee shield recovery"],
+   steps:[{t:"Frame and protect",d:"Frame elbows against opponent's hips to prevent sinking lower in mount."},
+          {t:"Wiggle hips (hip escape)",d:"Shrimp to one side repeatedly — creating space between your hips."},
+          {t:"Knee shield",d:"Bring knee up as a shield as space develops."},
+          {t:"Recover guard",d:"Continue shrimping until guard is recovered."}],
+   mistakes:["No elbow frames — they sink lower in mount","Hip escaping without direction","Stopping before fully recovering guard"],
+   tips:["Elbow escape from mount is the backup to the bridge — drill both","The hip escape is the engine; the elbow frames create the space"],
+   advanced:[{t:"Elbow Escape Combination with Bridge",d:"Bridge first to distract, then immediately switch to elbow escape when they compensate."},{t:"Elbow Escape to Single Leg",d:"As you recover guard, attack their near leg with a single leg."}],
+   related:[4,20,21,23,79,92,93,95]},
+
+  {id:83,week:14,cls:"B",cat:"Mount/KOB",name:"Rear Mount + Arm Lock from the Back",
+   h:["Isolate arm","Body triangle","Arm lock finish"],
+   steps:[{t:"Full back control",d:"Establish back control with hooks or body triangle."},
+          {t:"Arm isolation",d:"Isolate one arm — feed their arm by working from the seatbelt."},
+          {t:"Arm lock setup",d:"Get the arm in a position where you can apply a straight armbar from the back."},
+          {t:"Finish",d:"Extend the arm lock — pressing arm against your chest while rotating."}],
+   mistakes:["Arm not properly isolated","Body triangle not locked — they move and escape","Arm lock direction wrong — must work with the joint, not against your own mechanics"],
+   tips:["Body triangle replaces hooks and gives more stability — useful when hooks are defended","Arm locks from the back are high percentage when the RNC is defended"],
+   advanced:[{t:"Back Arm Lock to RNC Transition",d:"If arm lock is defended, release and transition back to RNC."},{t:"Back Arm Lock to Triangle",d:"If they pull arm free, transition to a back triangle choke."}],
+   related:[54,51,50,80,84]},
+
+  {id:84,week:14,cls:"B",cat:"Mount/KOB",name:"Knee on Belly + Armbar from KOB",
+   h:["KOB pressure","Isolate arm","Armbar finish"],
+   steps:[{t:"Establish KOB",d:"Knee on belly with collar grip and far arm control."},
+          {t:"Isolate the target arm",d:"As opponent reaches to push your knee off, isolate that reaching arm."},
+          {t:"Step over for armbar",d:"Step over the head and position for the armbar."},
+          {t:"Armbar finish",d:"Apply the armbar per standard mechanics."}],
+   mistakes:["Waiting too long — the reaching arm is a brief opportunity","Step over landing on wrong side","Not keeping knee pressure until armbar is applied — they escape"],
+   tips:["KOB forces the opponent to react — the armbar catches their reaction","The reaching arm is the invitation — accept it immediately"],
+   advanced:[{t:"KOB Armbar to Triangle Combination",d:"If they pull arm out, immediately triangle."},{t:"KOB to Multiple Submissions",d:"Use KOB to force reactions, then attack whichever submission appears: armbar, collar choke, or take the back."}],
+   related:[56,53,61,24]},
+
+  {id:85,week:15,cls:"A",cat:"Self-Defense",name:"Block Front Kick + Elbow Strike",
+   h:["Manage the distance","Redirect with the forearm","Turn the hips"],
+   steps:[{t:"Recognize and redirect",d:"As front kick comes, use forearm to redirect it off-center — not a hard block, a redirect."},
+          {t:"Step inside",d:"Step to the inside of the kick, creating an advantageous angle."},
+          {t:"Elbow strike",d:"Drive elbow into the face, chin, or body from the inside angle."},
+          {t:"Follow up",d:"Clinch or continue striking combination."}],
+   mistakes:["Hard block instead of redirect — risk of injury and wastes energy","Stepping to the outside — loses the angle advantage","Elbow strike with arm only — hips must rotate to power the elbow"],
+   tips:["The redirect uses minimal force — guide the kick past you","Step inside simultaneously with the redirect — they arrive together"],
+   advanced:[{t:"Front Kick Redirect to Takedown",d:"Redirect the kick, step inside, shoot a double leg."},{t:"Front Kick Block to Clinch",d:"Redirect into a clinch position."}],
+   related:[37,40,61,91]},
+
+  {id:86,week:15,cls:"A",cat:"Guard Top",name:"Open the Guard Standing Up with Two Hands on the Pants",
+   h:["Post leg up on same side as collar grip","Press opponent's hips","Elbows closed"],
+   steps:[{t:"Stand in guard",d:"Carefully stand inside the guard — one foot at a time, maintaining base."},
+          {t:"Two hands on the pants",d:"Control both pants legs (knees/thighs) — this controls their hips."},
+          {t:"Press hips down",d:"Drive downward pressure through the pants grip onto their hips."},
+          {t:"Open the guard and pass",d:"Guard opens under hip pressure — immediately enter a pass."}],
+   mistakes:["Standing without controlling the pants — vulnerable to sweeps while standing","Pants grip too high — loses the hip control","Standing without checking head — vulnerable to collar grips"],
+   tips:["Standing in guard is powerful but must be done correctly — control first, stand second","Pants grip gives better hip control than belt grip for standing guard opening"],
+   advanced:[{t:"Standing Guard Open to Toreando",d:"From standing with pants control, directly enter toreando pass."},{t:"Standing Guard Open to Leg Drag",d:"Control one leg for a leg drag entry from standing."}],
+   related:[14,38,62,32,87]},
+
+  {id:87,week:15,cls:"A",cat:"Guard Top",name:"Leg Drag Guard Pass",
+   h:["Control the heel","Knee down over the leg","Underhook with grip on collar"],
+   steps:[{t:"Control the heel",d:"Control the near heel — key grip for the leg drag."},
+          {t:"Drag and flatten",d:"Drag the leg across the opponent's body, flattening their guard structure."},
+          {t:"Knee over the leg",d:"Place your knee over the dragged leg to pin it."},
+          {t:"Underhook and sidemount",d:"Establish underhook with collar grip and settle into sidemount."}],
+   mistakes:["Heel grip too loose — they pull leg back","Knee not pinning the dragged leg","Not getting underhook — they recover guard"],
+   tips:["Heel control is the foundation of the leg drag — it must be tight","Once the leg is dragged and pinned, the pass is nearly complete — don't rush"],
+   advanced:[{t:"Leg Drag to Back",d:"If opponent turns (Tech 66), take the back."},{t:"Leg Drag to Body Lock",d:"Use the leg drag to enter a body lock pass for control."}],
+   related:[65,66,32,86]},
+
+  {id:88,week:15,cls:"B",cat:"Self-Defense",name:"Defense Against Headlock from Behind + Takedown",
+   h:["Chin tuck","Step out","Takedown finish"],
+   steps:[{t:"Chin tuck immediately",d:"When headlocked from behind, tuck chin to protect the neck."},
+          {t:"Step out",d:"Step one foot out to the side to create base and prepare for the counter."},
+          {t:"Drop under and trip",d:"Drop your level, step through between their legs, and trip them to the ground."},
+          {t:"Follow to ground control",d:"Maintain control and transition to sidemount or mount."}],
+   mistakes:["Not tucking chin — choke can set in quickly","Staying in a narrow stance — no base for the counter","Trip direction wrong"],
+   tips:["The chin tuck buys you time — use it immediately and work the escape","Step out creates the base needed for the trip — don't skip it"],
+   advanced:[{t:"Rear Headlock to Hip Throw",d:"From the rear headlock position, pivot and hip throw."},{t:"Rear Headlock to Back Control",d:"Instead of throwing, use the position to transition to rear control."}],
+   related:[49,52,73,67]},
+
+  {id:89,week:15,cls:"B",cat:"Guard Bottom",name:"Butterfly Guard Sweep",
+   h:["Hooks in","Underhook","Sweep and control"],
+   steps:[{t:"Establish butterfly guard",d:"Sit up with both feet hooking inside opponent's thighs — the butterfly hooks."},
+          {t:"Underhook and posture control",d:"Establish an underhook on one side and control their posture."},
+          {t:"Off balance",d:"Elevate with your butterfly hook on the underhook side while pulling with the underhook."},
+          {t:"Sweep and come on top",d:"Opponent falls to the hooked side — follow to top."}],
+   mistakes:["Hooks not inside the thighs — reduces lifting power","No underhook — sweep lacks the top-body component","Elevating without off-balancing first"],
+   tips:["Butterfly guard is a highly offensive guard — attack from it, don't just hold it","The sweep uses hook elevation AND underhook pull simultaneously"],
+   advanced:[{t:"Butterfly to X-Guard",d:"If opponent steps forward to defend the sweep, transition to X-guard (Tech 90)."},{t:"Butterfly Back Take",d:"If sweep is defended by them leaning away, take their back (Tech 90)."}],
+   related:[90,71,26,29,47]},
+
+  {id:90,week:15,cls:"B",cat:"Guard Bottom",name:"Butterfly Guard Back Take",
+   h:["Control posture","Angle off","Back take"],
+   steps:[{t:"Butterfly guard setup",d:"Establish butterfly guard with underhook."},
+          {t:"Angle and create reaction",d:"Attempt sweep or move to create a reaction — opponent may lean away."},
+          {t:"Take the back",d:"When they lean away or posture, use the underhook to come up behind them."},
+          {t:"Establish back control",d:"Lock in hooks and seatbelt."}],
+   mistakes:["Attempting back take without a reaction — opponent base is too strong","Underhook too shallow for the back take angle","Not establishing hooks before they turn in"],
+   tips:["Back take from butterfly is extremely smooth — practice the timing with the sweep threat","The underhook is your lever for the back take, just as it is for the sweep"],
+   advanced:[{t:"Butterfly Back to RNC",d:"From back control via butterfly, attack RNC."},{t:"Butterfly to X-Guard Entry",d:"As they step forward to counter the back take, enter X-guard."}],
+   related:[89,50,51,54,72]},
+
+  {id:91,week:16,cls:"A",cat:"Self-Defense",name:"Escape from Front Bear Hug Under Arm + Outside Hook Takedown + Straight Armbar",
+   h:["Bring elbows together","Control the arms","Off balance the opponent"],
+   steps:[{t:"Create space with elbows",d:"When bear hugged under the arms from the front, bring elbows together sharply downward to break the grip."},
+          {t:"Control their arms",d:"As grip breaks, control their arms to prevent re-grabbing and striking."},
+          {t:"Outside hook",d:"Step to outside and place outside hook behind their heel."},
+          {t:"Take down and armbar",d:"Trip them backward and immediately transition to armbar."}],
+   mistakes:["Elbows going out instead of together","Not controlling their arms after the break","Outside hook placement too high"],
+   tips:["The elbow squeeze down and together is one sharp motion — practice for power","Control their arms the moment the grip breaks — don't let them reset"],
+   advanced:[{t:"Front Bear Hug to Hip Throw",d:"After breaking the grip, enter a hip throw instead."},{t:"Front Bear Hug Escape to Double Leg",d:"After breaking the grip, shoot a double leg."}],
+   related:[7,10,16,67,70]},
+
+  {id:92,week:16,cls:"A",cat:"Mount/KOB",name:"Escape from Mount Using the Bridge",
+   h:["Trap the arm","Block the foot","Bridge over the shoulder"],
+   steps:[{t:"Trap the arm",d:"Trap one of opponent's arms — usually the one nearest to you."},
+          {t:"Block the foot",d:"Block their same-side foot with your leg to prevent posting."},
+          {t:"Bridge over the shoulder",d:"Bridge explosively toward the trapped arm side — rolling them over their shoulder."},
+          {t:"Land in guard",d:"Land in closed guard and immediately establish your position."}],
+   mistakes:["Bridging straight up — must bridge diagonally toward the trapped shoulder","Not trapping the foot — they post and maintain mount","Bridge too weak — must be explosive"],
+   tips:["The trapped arm removes their post; the blocked foot removes their base; the bridge then works","Full bridge requires your whole body — feet planted, hips as high as possible"],
+   advanced:[{t:"Bridge to Back Take",d:"If they base strongly against the bridge, use their base to take their back."},{t:"Two-Stage Bridge",d:"Small bridge to test their reaction, then full explosive bridge in the same direction."}],
+   related:[4,20,21,79,93]},
+
+  {id:93,week:16,cls:"A",cat:"Mount/KOB",name:"Escape from Mount — Elbows when Opponent Opens Knee + Recover Closed Guard",
+   h:["Opponent keeps balance","Elbow opens space","Close the guard"],
+   steps:[{t:"Elbow frame",d:"Drive elbow into the space created by the opening knee to prevent re-mount."},
+          {t:"Hip escape",d:"Hip escape while maintaining elbow frame."},
+          {t:"Knee shield",d:"Bring knee up as shield through the space."},
+          {t:"Close the guard",d:"Continue recovery until closed guard is locked."}],
+   mistakes:["Elbow not driving into the space — opportunity closes","Hip escape without the elbow — they re-advance"],
+   tips:["The opening knee creates a brief window — drive the elbow in immediately","This technique and the bridge are your two mount escapes — know both perfectly"],
+   advanced:[{t:"Elbow Escape to Leg Attack",d:"As you recover guard, if their leg is positioned, attack a single leg."},{t:"Elbow Escape to Half Guard Attack",d:"Settle in half guard if full guard isn't immediately available and work offensively."}],
+   related:[23,82,4,92,95]},
+
+  {id:94,week:16,cls:"B",cat:"Self-Defense",name:"Rear Bear Hug Over Arms + Hook Leg + Hand on Floor + Leg Lock",
+   h:["Hook the leg","Hands on the ground","Press opponent's knee"],
+   steps:[{t:"Drop and create space",d:"Drop weight as they bear hug from behind over the arms."},
+          {t:"Hook the leg",d:"Hook one of their legs with your leg — behind their knee."},
+          {t:"Hands on floor",d:"Bring hands to the floor in front of you."},
+          {t:"Leg lock finish",d:"Rotate and press their knee to apply a leg lock finish."}],
+   mistakes:["Leg hook too loose — they step out","Hands not reaching floor — no base for the lock","Pressing in wrong direction — must follow joint mechanics"],
+   tips:["This is an advanced self-defense finish — the leg lock catches them completely off guard","The sequence must be practiced to make it smooth: drop, hook, floor, lock"],
+   advanced:[{t:"Rear Bear Hug to Conventional Counter",d:"Use conventional hip throw or takedown if leg lock opportunity isn't clear."},{t:"Bear Hug Leg Lock to Ground Control",d:"After the leg lock, maintain leg control and transition to top position."}],
+   related:[67,70,73,88]},
+
+  {id:95,week:16,cls:"B",cat:"Mount/KOB",name:"Escape from Mount — Elbows when Opponent Initiates Mount Transition + Take the Back",
+   h:["Elbow opens space","Control the back","Post on the elbow"],
+   steps:[{t:"Recognize transition moment",d:"Identify when opponent initiates a transition (moving to high mount, reaching, or repositioning)."},
+          {t:"Elbow to create space",d:"Drive elbow into the space created by their movement."},
+          {t:"Hip escape and come up",d:"Hip escape using the space and come up to knees."},
+          {t:"Take the back",d:"End up behind them with hooks and seatbelt."}],
+   mistakes:["Missing the transition moment — waiting until they've repositioned","Hip escape direction wrong","Not establishing hooks after taking the back"],
+   tips:["The opponent's transition is your opportunity — their movement creates space for your escape","This is an advanced mount escape — the timing with their transition is key"],
+   advanced:[{t:"Mount Escape Back Take to Bow and Arrow",d:"From the back taken via mount escape, attack bow and arrow choke."},{t:"Mount Escape to Double Leg Counter",d:"Instead of full back take, as they base forward in the transition, shoot a double leg."}],
+   related:[82,93,23,50,51]},
+
+  {id:96,week:16,cls:"B",cat:"Mount/KOB",name:"Knee on Belly Escape Turning the Back + Open Guard",
+   h:["Hide the arm","Turn the back going to the knees","Recover the guard"],
+   steps:[{t:"Hide the pushing arm",d:"When attempting to push the KOB knee away, hide your arm against your body to prevent it from being isolated."},
+          {t:"Turn to knees",d:"Turn to your knees away from the KOB pressure — your back momentarily faces opponent."},
+          {t:"Recover open guard",d:"As you come to all fours, kick your legs out to establish open guard."},
+          {t:"Re-engage from open guard",d:"Work from open guard position."}],
+   mistakes:["Not hiding the arm — it gets isolated for an armbar","Turning too early before managing the KOB knee","Not recovering guard — remaining on all fours is dangerous"],
+   tips:["This is a more advanced KOB escape — use it when the conventional escape (Tech 24) is blocked","The arm must be hidden before the turn — this is the critical safety detail"],
+   advanced:[{t:"KOB Escape to Takedown",d:"From the all-fours position during the escape, shoot a takedown if opponent leans in."},{t:"Back Turn to Rear Takedown",d:"As opponent chases you while you turn to knees, catch their leg for a takedown counter."}],
+   related:[24,53,84,23]},
+];
+
+// ═══════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════
+const CAT_TAG = {"Self-Defense":"ct-sd","Guard Top":"ct-gt","Guard Bottom":"ct-gb","Mount/KOB":"ct-mk","Submission":"ct-sub"};
+const COMP_LABEL = ["Not trained","Aware","Drilling","Competent","Proficient","Mastered ★"];
+
+// Submission techniques (techniques that are primarily submissions)
+const SUBMISSION_IDS = [5,6,8,9,11,31,34,51,54,55,56,57,59,60,74,75,80,81,83,84];
+
+let state={}, currentId=null;
+
+function loadState(){try{const s=localStorage.getItem('gb1_v3');if(s)state=JSON.parse(s);}catch(e){}}
+function saveState(){try{localStorage.setItem('gb1_v3',JSON.stringify(state));}catch(e){}}
+function getT(id){if(!state[id])state[id]={c:0,date:'',notes:'',h:{}};return state[id];}
+
+// ═══════════════════════════════════════════════
+// PAGES
+// ═══════════════════════════════════════════════
+function showPage(p){
+  ['tracker','principles','glossary','positions'].forEach(x=>
+    document.getElementById('page-'+x).style.display=x===p?'block':'none');
+  document.querySelectorAll('.tab').forEach((t,i)=>
+    t.classList.toggle('active',['tracker','principles','glossary','positions'][i]===p));
+}
+
+// ═══════════════════════════════════════════════
+// RENDER TRACKER
+// ═══════════════════════════════════════════════
+function render(){
+  const search=document.getElementById('searchBox').value.toLowerCase();
+  const filter=document.querySelector('.fbtn.active')?.dataset.filter||'all';
+  const cont=document.getElementById('mainContent');
+  let filtered=TECHNIQUES;
+  if(filter==='untrained') filtered=filtered.filter(t=>getT(t.id).c===0);
+  else if(filter==='Submission') filtered=filtered.filter(t=>SUBMISSION_IDS.includes(t.id));
+  else if(filter!=='all') filtered=filtered.filter(t=>t.cat===filter);
+  if(search) filtered=filtered.filter(t=>
+    t.name.toLowerCase().includes(search)||t.cat.toLowerCase().includes(search)||
+    t.h.some(h=>h.toLowerCase().includes(search))||String(t.id).includes(search));
+  const weeks={};
+  filtered.forEach(t=>{if(!weeks[t.week])weeks[t.week]=[];weeks[t.week].push(t);});
+  if(!Object.keys(weeks).length){cont.innerHTML='<div class="empty">No techniques match your search.</div>';return;}
+  cont.innerHTML='';
+  Object.keys(weeks).sort((a,b)=>a-b).forEach(wk=>{
+    const techs=weeks[wk];
+    const trained=techs.filter(t=>getT(t.id).c>0).length;
+    const g=document.createElement('div');g.className='week-group';
+    g.innerHTML=`<div class="week-hdr"><span class="week-title">WEEK ${wk}</span><span class="week-badge">${techs.length} techniques</span><span class="week-comp">${trained}/${techs.length} trained</span></div><div class="cards-grid" id="wg-${wk}"></div>`;
+    cont.appendChild(g);
+    const grid=g.querySelector(`#wg-${wk}`);
+    techs.forEach(t=>grid.appendChild(buildCard(t)));
+  });
+  updateStats();
+}
+
+function buildCard(t){
+  const st=getT(t.id);
+  const card=document.createElement('div');
+  card.className='card'+(st.c>=5?' mastered':st.c>0?' trained':'');
+  card.id='card-'+t.id;
+
+  const stars=[1,2,3,4,5].map(n=>
+    `<span class="star ${st.c>=n?'lit':''}" onclick="event.stopPropagation();setStar(${t.id},${n})">★</span>`
+  ).join('');
+
+  const hl=t.h.map((h,i)=>
+    `<label class="hl" onclick="event.stopPropagation()">
+      <input type="checkbox" ${st.h[i]?'checked':''} onchange="setHL(${t.id},${i},this.checked)">
+      <span class="hbox"></span><span class="hl-txt">${i+1}. ${h}</span>
+    </label>`
+  ).join('');
+
+  const gq=encodeURIComponent(`Gracie Barra BJJ ${t.name}`);
+  const ytq=encodeURIComponent(`Gracie Barra ${t.name} tutorial`);
+  const isSub=SUBMISSION_IDS.includes(t.id);
+  const displayCat=isSub?'Submission':t.cat;
+  const tagClass=isSub?'ct-sub':CAT_TAG[t.cat];
+
+  card.innerHTML=`
+    <div class="card-hdr">
+      <span class="tech-num">${String(t.id).padStart(2,'0')}</span>
+      <span class="cat-tag ${tagClass}">${displayCat}</span>
+      <button class="card-search-btn" onclick="event.stopPropagation();window.open('https://www.google.com/search?q=${gq}','_blank')" title="Google Search">🔍</button>
+      <button class="card-search-btn" onclick="event.stopPropagation();window.open('https://www.youtube.com/results?search_query=${ytq}','_blank')" title="YouTube Search">▶</button>
+      <span class="card-cls">Class ${t.cls}</span>
+    </div>
+    <div class="card-body">
+      <div class="tech-name">${t.name}</div>
+      <div class="highlights">${hl}</div>
+    </div>
+    <div class="card-foot">
+      <div class="stars">${stars}</div>
+      <button class="expand-btn" onclick="event.stopPropagation();openModal(${t.id})">⊕ details</button>
+      <input class="date-inp" type="date" value="${st.date}" onclick="event.stopPropagation()" onchange="event.stopPropagation();setDate(${t.id},this.value)">
+    </div>`;
+
+  card.addEventListener('click',()=>openModal(t.id));
+  return card;
+}
+
+// ═══════════════════════════════════════════════
+// STATS
+// ═══════════════════════════════════════════════
+function updateStats(){
+  const trained=TECHNIQUES.filter(t=>getT(t.id).c>0).length;
+  const mastered=TECHNIQUES.filter(t=>getT(t.id).c===5).length;
+  const pct=Math.round(trained/TECHNIQUES.length*100);
+  document.getElementById('s-trained').textContent=trained;
+  document.getElementById('s-mastered').textContent=mastered;
+  document.getElementById('progFill').style.width=pct+'%';
+  document.getElementById('progPct').textContent=pct+'%';
+
+  // KPI by category
+  const cats=[
+    {key:'sd', cat:'Self-Defense', elId:'kpi-sd'},
+    {key:'gt', cat:'Guard Top',    elId:'kpi-gt'},
+    {key:'gb', cat:'Guard Bottom', elId:'kpi-gb'},
+    {key:'mk', cat:'Mount/KOB',    elId:'kpi-mk'},
+  ];
+  cats.forEach(({cat,elId})=>{
+    const all=TECHNIQUES.filter(t=>t.cat===cat);
+    const done=all.filter(t=>getT(t.id).c>0).length;
+    const vEl=document.getElementById(elId);
+    const tEl=document.getElementById(elId+'-tot');
+    if(vEl) vEl.textContent=done;
+    if(tEl) tEl.textContent='/'+all.length;
+  });
+  // Submissions KPI
+  const subAll=SUBMISSION_IDS.length;
+  const subDone=SUBMISSION_IDS.filter(id=>getT(id).c>0).length;
+  const subV=document.getElementById('kpi-sub');
+  const subT=document.getElementById('kpi-sub-tot');
+  if(subV) subV.textContent=subDone;
+  if(subT) subT.textContent='/'+subAll;
+}
+
+// ═══════════════════════════════════════════════
+// CARD ACTIONS
+// ═══════════════════════════════════════════════
+function setStar(id,val){const st=getT(id);st.c=st.c===val?0:val;saveState();refreshCard(id);updateStats();showToast(`Tech ${id}: ${COMP_LABEL[st.c]}`);}
+function setHL(id,idx,val){getT(id).h[idx]=val;saveState();}
+function setDate(id,val){const st=getT(id);st.date=val;if(val&&st.c===0)st.c=1;saveState();refreshCard(id);updateStats();}
+function refreshCard(id){const t=TECHNIQUES.find(x=>x.id===id);if(!t)return;const e=document.getElementById('card-'+id);if(!e)return;e.replaceWith(buildCard(t));}
+
+// ═══════════════════════════════════════════════
+// MODAL
+// ═══════════════════════════════════════════════
+function openModal(id){
+  currentId=id;
+  const t=TECHNIQUES.find(x=>x.id===id);
+  const st=getT(id);
+
+  document.getElementById('mNum').textContent=String(id).padStart(2,'0');
+  document.getElementById('mCat').textContent=t.cat.toUpperCase();
+  document.getElementById('mTitle').textContent=t.name;
+  document.getElementById('mWeek').textContent=`Week ${t.week} · Class ${t.cls}`;
+
+  // Search links - Google and YouTube only
+  const q=encodeURIComponent(`Gracie Barra BJJ ${t.name}`);
+  const ytq=encodeURIComponent(`Gracie Barra ${t.name} tutorial`);
+  document.getElementById('mGoogle').href=`https://www.google.com/search?q=${q}`;
+  document.getElementById('mYt').href=`https://www.youtube.com/results?search_query=${ytq}`;
+
+  // YouTube embed — search for Gracie Barra video
+  const ytContainer=document.getElementById('ytEmbedContainer');
+  const ytSearchQ=encodeURIComponent(`Gracie Barra ${t.name}`);
+  ytContainer.innerHTML=`
+    <div class="yt-embed-wrap">
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px;text-align:center;">
+        <div style="font-family:var(--mono);font-size:11px;color:var(--muted);margin-bottom:10px;">Search YouTube for this technique with Gracie Barra:</div>
+        <div class="yt-search-fallback">
+          <a class="yt-fallback-btn google" href="https://www.google.com/search?q=${q}" target="_blank">🔍 Google: ${t.name.substring(0,30)}…</a>
+          <a class="yt-fallback-btn yt" href="https://www.youtube.com/results?search_query=${ytSearchQ}" target="_blank">▶ YouTube: Gracie Barra ${t.name.substring(0,25)}…</a>
+        </div>
+        <div style="margin-top:10px;font-family:var(--mono);font-size:10px;color:var(--muted);">💡 Tip: On YouTube, filter by "Gracie Barra" in the channel name for official content</div>
+      </div>
+    </div>`;
+
+  // Stars
+  const starsEl=document.getElementById('mStars');
+  starsEl.innerHTML=[1,2,3,4,5].map(n=>
+    `<span class="modal-star ${st.c>=n?'lit':''}" onclick="modalSetStar(${n})">★</span>`
+  ).join('');
+  document.getElementById('mCompLabel').textContent=COMP_LABEL[st.c];
+
+  // Date
+  document.getElementById('mDate').value=st.date;
+
+  // Highlights
+  const hlEl=document.getElementById('mHighlights');
+  hlEl.innerHTML=t.h.map((h,i)=>
+    `<label class="modal-hl">
+      <input type="checkbox" ${st.h[i]?'checked':''} onchange="modalSetHL(${i},this.checked)">
+      <span class="modal-hbox"></span>
+      <span class="modal-hl-txt">${i+1}. ${h}</span>
+    </label>`
+  ).join('');
+
+  // Steps
+  const stepsEl=document.getElementById('mSteps');
+  stepsEl.innerHTML=(t.steps||[]).map((s,i)=>
+    `<div class="step">
+      <div class="step-num">${i+1}</div>
+      <div class="step-content">
+        <div class="step-title">${s.t}</div>
+        <div class="step-desc">${s.d}</div>
+      </div>
+    </div>`
+  ).join('');
+
+  // Mistakes
+  const mistEl=document.getElementById('mMistakes');
+  mistEl.innerHTML=(t.mistakes||[]).map(m=>
+    `<div class="mistake"><span class="mistake-icon">✗</span><span class="mistake-text">${m}</span></div>`
+  ).join('');
+
+  // Tips
+  const tipsEl=document.getElementById('mTips');
+  tipsEl.innerHTML=(t.tips||[]).map(tip=>
+    `<div class="tip"><span class="tip-icon">✦</span><span class="tip-text">${tip}</span></div>`
+  ).join('');
+
+  // Advanced
+  const advEl=document.getElementById('mAdvanced');
+  advEl.innerHTML=(t.advanced||[]).map(a=>
+    `<div class="adv-item"><div class="adv-title">${a.t}</div><div class="adv-desc">${a.d}</div></div>`
+  ).join('');
+
+  // Related
+  const relEl=document.getElementById('mRelated');
+  relEl.innerHTML=(t.related||[]).map(rid=>{
+    const rt=TECHNIQUES.find(x=>x.id===rid);
+    if(!rt)return'';
+    return`<button class="related-btn" onclick="openModal(${rid})">
+      <span class="rnum">#${String(rid).padStart(2,'0')}</span>${rt.name.substring(0,30)}${rt.name.length>30?'…':''}
+    </button>`;
+  }).join('');
+
+  // Notes
+  document.getElementById('mNotes').value=st.notes||'';
+
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function closeModal(){
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow='';
+  if(currentId){refreshCard(currentId);updateStats();}
+}
+
+function closeModalOutside(e){
+  if(e.target===document.getElementById('modalOverlay'))closeModal();
+}
+
+function modalSetStar(val){
+  const st=getT(currentId);
+  st.c=st.c===val?0:val;
+  saveState();
+  const stars=document.getElementById('mStars').children;
+  for(let i=0;i<stars.length;i++)stars[i].classList.toggle('lit',i<st.c);
+  document.getElementById('mCompLabel').textContent=COMP_LABEL[st.c];
+  showToast(`${COMP_LABEL[st.c]}`);
+}
+
+function modalSetHL(idx,val){getT(currentId).h[idx]=val;saveState();}
+function modalSetDate(val){const st=getT(currentId);st.date=val;if(val&&st.c===0){st.c=1;}saveState();}
+function modalSetNotes(val){getT(currentId).notes=val;saveState();}
+
+// ═══════════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════════
+function showToast(msg){
+  const el=document.getElementById('toast');
+  el.textContent=msg;el.classList.add('show');
+  clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),1800);
+}
+
+// ═══════════════════════════════════════════════
+// EXPORT / IMPORT
+// ═══════════════════════════════════════════════
+function exportData(){
+  const exportObj={
+    version:'gb1_v4',
+    exportDate:new Date().toISOString(),
+    data:state
+  };
+  const blob=new Blob([JSON.stringify(exportObj,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  const d=new Date();
+  const dateStr=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  a.download=`GB1-progress-${dateStr}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast('✓ Progress exported to Files app');
+}
+
+function importData(input){
+  const file=input.files[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      const obj=JSON.parse(e.target.result);
+      const imported=obj.data||obj; // support both versioned and raw
+      if(typeof imported==='object'&&imported!==null){
+        state=imported;
+        saveState();
+        render();
+        updateStats();
+        showToast('✓ Progress imported successfully!');
+      }else{
+        showToast('✗ Invalid file format');
+      }
+    }catch(err){
+      showToast('✗ Could not read file');
+    }
+    input.value=''; // reset so same file can be re-imported
+  };
+  reader.readAsText(file);
+}
+
+// ═══════════════════════════════════════════════
+// SEARCH & FILTER EVENTS
+// ═══════════════════════════════════════════════
+document.getElementById('searchBox').addEventListener('input',render);
+document.querySelectorAll('.fbtn').forEach(btn=>btn.addEventListener('click',()=>{
+  document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');render();
+}));
+
+// ESC to close modal
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+// ═══════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════
+loadState();
+render();
+</script>
+</body>
+</html>
